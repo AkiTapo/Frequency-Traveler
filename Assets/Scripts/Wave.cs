@@ -9,7 +9,8 @@ public class Wave : MonoBehaviour {
     public GameObject rectangle;
     public float recordInterval;
     public int waveAmount;
-    public int waveWidth, waveHeight;
+    public float waveWidth, waveHeight;
+    public int waveIntensity;
     GameObject[] waves;
     float increaseLowFreq;
 
@@ -57,6 +58,8 @@ public class Wave : MonoBehaviour {
         for (int x = 0; x < waveAmount; x++)
         {
             waves[x] = Instantiate(rectangle, new Vector3(x * rectangle.GetComponent<Transform>().localScale.x - Mathf.Abs(transform.position.x), transform.position.y, 0), Quaternion.identity) as GameObject;
+            waves[x].transform.localScale = new Vector3(waves[x].transform.localScale.x * waveWidth, 1, 1);
+            waves[x].transform.position = new Vector3(waves[x].transform.position.x * waveWidth, waves[x].transform.position.y, waves[x].transform.position.z);
         }
 
         //linerenderer = GetComponent<LineRenderer>();
@@ -118,7 +121,10 @@ public class Wave : MonoBehaviour {
 
         for (int i = 0; i<waveAmount; i++) {
             increaseLowFreq = Mathf.Exp(3) * i;
-            waves[i].transform.localScale = new Vector3(waves[i].transform.localScale.x, waveHeight + samples[i+20] * increaseLowFreq, waves[i].transform.localScale.z);
+            //Get the highest from array
+            //Push it and its surounding waves
+            waves[i].transform.localScale = new Vector3(waves[i].transform.localScale.x, waveHeight + samples[i + 20] * increaseLowFreq * waveIntensity, waves[i].transform.localScale.z);
+            waves[i].GetComponent<Renderer>().material.color = new Vector4(1 / (256 - 88), 1 / (256 - 121), 1 / waves[i].transform.localScale.y);
         }
     }
     /*
