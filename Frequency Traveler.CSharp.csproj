@@ -76,8 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AudioSourceGetSpectrumDataExample.cs" />
+    <Compile Include="Assets\Scripts\Birds.cs" />
+    <Compile Include="Assets\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
+    <Compile Include="Assets\Scripts\Ship.cs" />
     <Compile Include="Assets\Scripts\SingleMicrophoneCapture.cs" />
+    <Compile Include="Assets\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\Visualize.cs" />
     <Compile Include="Assets\Scripts\Wave.cs" />
   </ItemGroup>
