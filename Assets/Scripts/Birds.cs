@@ -31,13 +31,14 @@ public class Birds : MonoBehaviour {
             print("Bird died");
             alive = false;
             GetComponent<Rigidbody>().useGravity = true;
-
+            gameObject.GetComponent<Animation>().Play("Die");
 
 
             if (collision.gameObject.tag == "Wave")
             {
                 Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), gameObject.GetComponent<Collider>(), true);
                 GetComponent<Rigidbody>().drag = 10;
+
             }
             else
             {

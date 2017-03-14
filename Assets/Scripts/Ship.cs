@@ -13,6 +13,17 @@ public class Ship : MonoBehaviour {
 	void Update () {
 		
 	}
+    void LateUpdate()
+    {
+       // OnCollisionEnter too much rotation sink, dissable colider
+        /*
+        if (transform.localRotation == new Vector4(58,5,5,4))
+        {
+            GetComponent<Collider>().enabled = false;
+        }
+        */
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         //print("Collldied");
@@ -22,7 +33,7 @@ public class Ship : MonoBehaviour {
             if (collision.gameObject.tag == "Bird")
             {
 
-                collision.gameObject.GetComponent<Animation>().Play("Die");
+                
             }
         }
 
