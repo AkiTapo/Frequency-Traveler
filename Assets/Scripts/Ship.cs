@@ -16,12 +16,17 @@ public class Ship : MonoBehaviour {
     void LateUpdate()
     {
        // OnCollisionEnter too much rotation sink, dissable colider
-        /*
-        if (transform.localRotation == new Vector4(58,5,5,4))
+        
+        if (transform.localEulerAngles.z > 90 || transform.eulerAngles.z < -90)
         {
             GetComponent<Collider>().enabled = false;
+            print("Ship colider disabled");
         }
-        */
+        else
+        {
+            GetComponent<Collider>().enabled = true;
+        }
+        
     }
 
     void OnCollisionEnter(Collision collision)

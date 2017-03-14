@@ -12,7 +12,7 @@ public class Birds : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        print("this bird is alive " + alive);
+        //print("this bird is alive " + alive);
 	}
 
     void OnCollisionEnter(Collision collision)
