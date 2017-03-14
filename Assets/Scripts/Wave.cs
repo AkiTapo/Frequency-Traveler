@@ -12,8 +12,12 @@ public class Wave : MonoBehaviour
     [Range(10, 120)]
     public int waveAmount;
     [Range(9, 15)]
-    public int maxWater = 14;
-    public float waveWidth, waterLevel;
+
+    public float waveWidth;
+    public static int maxWaterLevelLocal = 14;
+    public static float minWaterLevelLocal;
+    public float minWaterLevel;
+    public int maxWaterLevel;
     public float waveResetSpeed;
 
     GameObject[] waves;
@@ -59,7 +63,7 @@ public class Wave : MonoBehaviour
         for (int x = 0; x < waveAmount; x++)
         {
             waves[x] = Instantiate(rectangle, new Vector3(x * rectangle.GetComponent<Transform>().localScale.x - Mathf.Abs(transform.position.x), transform.position.y, 0), Quaternion.identity) as GameObject;
-            waves[x].transform.localScale = new Vector3(waves[x].transform.localScale.x * waveWidth, 1, 1);
+            waves[x].transform.localScale = new Vector3(waves[x].transform.localScale.x * waveWidth, 1, waves[x].transform.localScale.z);
             waves[x].transform.position = new Vector3(waves[x].transform.position.x * waveWidth, waves[x].transform.position.y, transform.position.z);
         }
 
@@ -90,6 +94,8 @@ public class Wave : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        minWaterLevelLocal = minWaterLevel;
+        maxWaterLevelLocal = maxWaterLevel;
 
         if (Input.GetKey("escape"))
         {
@@ -152,7 +158,7 @@ public class Wave : MonoBehaviour
                     }
                     else
                     {
-                        smoother += (waterLevel + samples[i] * waveIntensity * 5000);
+                        smoother += (minWaterLevelLocal + samples[i] * waveIntensity * 5000);
                         //waveY = (((waterLevel + samples[i] * waveIntensity * 1000) - (waterLevel + samples[i] * waveIntensity * 1000) / (waves[1].transform.localScale.x);
                     }
                 }
@@ -162,7 +168,7 @@ public class Wave : MonoBehaviour
             //waveY = (((waterLevel + samples[i] * waveIntensity * 1000) - (waterLevel + samples[i] * waveIntensity * 1000) / wavesmoother) + smoother) / devider;
 
 
-            if (waves[i].transform.localScale.y < maxWater) {
+            if (waves[i].transform.localScale.y < maxWaterLevelLocal) {
                 waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, Mathf.Lerp(waves[i].transform.localScale.y, smoother / devider, waveSpeed / 500 + 0.01f), waves[1].transform.localScale.z);
             }
         }
@@ -180,12 +186,12 @@ public class Wave : MonoBehaviour
         for (int i = 0; i < waveAmount; i++)
         {
 
-            if (waves[i].transform.localScale.y > waterLevel) {
+            if (waves[i].transform.localScale.y > minWaterLevelLocal) {
                 waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, waves[i].transform.localScale.y - waveSpeed / 500 + 0.01f, waves[1].transform.localScale.z);
             }
             else
             {
-                waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, waterLevel, waves[1].transform.localScale.z);
+                waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, minWaterLevelLocal, waves[1].transform.localScale.z);
             }
         
         }
