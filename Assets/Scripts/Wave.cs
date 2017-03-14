@@ -86,7 +86,7 @@ public class Wave : MonoBehaviour
             minFreq = 200;
             audioSource = null;
             audioSource = GetComponent<AudioSource>();
-            audioSource.clip = Microphone.Start(null, true, (int)100, maxFreq);
+            audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
         }
 
     }
@@ -104,7 +104,7 @@ public class Wave : MonoBehaviour
         }
         timer = Time.time;
 
-        audioSource.GetSpectrumData(samples, 0, fFTWindow);
+        audioSource.GetSpectrumData(samples, 0, FFTWindow.Rectangular);
 
         if (!startedRecording)
         {

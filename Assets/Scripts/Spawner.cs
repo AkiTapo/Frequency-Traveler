@@ -48,6 +48,7 @@ public class Spawner : MonoBehaviour
             print("currentBird id " + currentBird);
 
         }
+
         for (int i = 0; i < amountOfBirds; i++)
         {
             if (newBird[i] != null && newBird[i].GetComponent<Birds>().alive == true)

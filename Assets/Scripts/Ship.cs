@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Ship : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+    public Vector3 myRotation;
+    public int drag;
+    public bool drowning;
+    Collision collision;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -15,25 +18,55 @@ public class Ship : MonoBehaviour {
 	}
     void LateUpdate()
     {
-       // OnCollisionEnter too much rotation sink, dissable colider
-        
-        if (transform.localEulerAngles.z > 90 || transform.eulerAngles.z < -90)
+
+        //print(transform.localEulerAngles.z);
+        // OnCollisionEnter too much rotation sink, dissable colide5       
+        if (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 )
         {
-            GetComponent<Collider>().enabled = false;
-            print("Ship colider disabled");
+            //
+            //  GetComponent<Collider>()[0]
+            drowning = true;
+            //print("Ship colider disabled");
         }
         else
         {
-            GetComponent<Collider>().enabled = true;
+            //GetComponent<Collider>().enabled = true;
+            GetComponent<Rigidbody>().drag = drag;
+        }
+
+        if (drowning)
+        {
+            //to dissable all coliders on ship
+            foreach (Collider colider in GetComponents<Collider>())
+            {
+                colider.enabled = false;
+            }
+
+            if (collision != null && collision.gameObject.tag == "Wave")
+            {
+                gameObject.GetComponent<Rigidbody>().drag = drag * 4;
+                gameObject.GetComponent<Rigidbody>().angularDrag = 1;
+            }
+            //to sink by facing front
+            //transform.LookAt(Vector3.down);
         }
         
     }
 
     void OnCollisionEnter(Collision collision)
     {
+
+        this.collision  = collision;
         //print("Collldied");
         foreach (ContactPoint contact in collision.contacts)
         {
+
+            //Sink slowly, by setting drag to very high when in water and drowning
+            
+            if (collision.collider.bounds.Contains(transform.position))
+            {
+                print("point is inside collider");
+            }
 
             if (collision.gameObject.tag == "Bird")
             {

@@ -26,13 +26,22 @@ public class Birds : MonoBehaviour {
             }
 
 
-        if (collision.gameObject.tag != "Border" && collision.gameObject || collision.gameObject.tag == "Ship")
+        if (collision.gameObject.tag != "Border" && collision.gameObject)
         {
             print("Bird died");
             alive = false;
             GetComponent<Rigidbody>().useGravity = true;
             gameObject.GetComponent<Animation>().Play("Die");
 
+            //Assign score
+            if(collision.gameObject.tag == "Ship")
+            {
+                print("Colided with ship");
+                //Inside game manager
+                //score += 100;
+            }
+
+            //Assign score
 
             if (collision.gameObject.tag == "Wave")
             {

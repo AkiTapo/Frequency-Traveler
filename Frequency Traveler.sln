@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency Traveler.CSharp.Plugins", "Frequency Traveler.CSharp.Plugins.csproj", "{294EFB2C-D8CC-EF25-1293-8C88C5A7CEF0}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency Traveler.CSharp", "Frequency Traveler.CSharp.csproj", "{F292EFED-9C40-C5DA-E850-94BF59633C08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency Traveler.CSharp.Editor.Plugins", "Frequency Traveler.CSharp.Editor.Plugins.csproj", "{93F4C071-8F99-DB93-1EC2-A5388C05A6A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +13,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{294EFB2C-D8CC-EF25-1293-8C88C5A7CEF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{294EFB2C-D8CC-EF25-1293-8C88C5A7CEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{294EFB2C-D8CC-EF25-1293-8C88C5A7CEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{294EFB2C-D8CC-EF25-1293-8C88C5A7CEF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F292EFED-9C40-C5DA-E850-94BF59633C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F292EFED-9C40-C5DA-E850-94BF59633C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F292EFED-9C40-C5DA-E850-94BF59633C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F292EFED-9C40-C5DA-E850-94BF59633C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93F4C071-8F99-DB93-1EC2-A5388C05A6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93F4C071-8F99-DB93-1EC2-A5388C05A6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93F4C071-8F99-DB93-1EC2-A5388C05A6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93F4C071-8F99-DB93-1EC2-A5388C05A6A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
