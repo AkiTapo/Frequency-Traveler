@@ -7,13 +7,16 @@ using UnityEngine;
 public class Wave : MonoBehaviour
 {
 
-    public GameObject rectangle;
+
     // public float recordInterval;
+    [Range(1, 3)]
+    public int inputSwitch = 1;
     [Range(10, 120)]
     public int waveAmount;
     [Range(9, 15)]
-
     public float waveWidth;
+
+    public GameObject waveShape;
     public static int maxWaterLevelLocal = 14;
     public static float minWaterLevelLocal;
     public float minWaterLevel;
@@ -26,7 +29,7 @@ public class Wave : MonoBehaviour
     float expWaveHeight;
 
     [SerializeField]
-    [Range(2, 100)]
+    [Range(4, 100)]
     public int waveBlur = 15;
     [SerializeField]
     [Range (0, 30)]
@@ -62,7 +65,7 @@ public class Wave : MonoBehaviour
 
         for (int x = 0; x < waveAmount; x++)
         {
-            waves[x] = Instantiate(rectangle, new Vector3(x * rectangle.GetComponent<Transform>().localScale.x - Mathf.Abs(transform.position.x), transform.position.y, 0), Quaternion.identity) as GameObject;
+            waves[x] = Instantiate(waveShape, new Vector3(x * waveShape.GetComponent<Transform>().localScale.x - Mathf.Abs(transform.position.x), transform.position.y, 0), Quaternion.identity) as GameObject;
             waves[x].transform.localScale = new Vector3(waves[x].transform.localScale.x * waveWidth, 1, waves[x].transform.localScale.z);
             waves[x].transform.position = new Vector3(waves[x].transform.position.x * waveWidth, waves[x].transform.position.y, transform.position.z);
         }
@@ -198,5 +201,14 @@ public class Wave : MonoBehaviour
         yield return new WaitForSeconds(10);
     }
     
+    //Get input from brain
+    void brainRead()
+    {
+        //Range (0.16 to 40 Hz) ?
+        // https://www.emotiv.com/forums/topic/How_to_extract_different_frequency_range_FFT/
+
+    }
+
+
 
 }
