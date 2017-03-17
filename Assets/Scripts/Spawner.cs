@@ -86,7 +86,7 @@ public class Spawner : MonoBehaviour
         if (timer > lastSpawnedRock)
         {
             lastSpawnedRock = timer + rockSpawnInterwal;
-            newRock[0] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.back)) as GameObject;
+            //newRock[0] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.back)) as GameObject;
             rocksPresent++;
         }
 
@@ -94,7 +94,7 @@ public class Spawner : MonoBehaviour
         {
             for (int i = 0; i < rocksPresent; i++)
             {
-                newRock[i].transform.position = new Vector3(rocks[i].transform.position.x - levelMovingSPeed, rocks[i].transform.position.y, rocks[i].transform.position.z);
+                //newRock[i].transform.position = new Vector3(rocks[i].transform.position.x - levelMovingSPeed, rocks[i].transform.position.y, rocks[i].transform.position.z);
 
             }
 

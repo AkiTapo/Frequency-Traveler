@@ -22,6 +22,23 @@ public class Ship : MonoBehaviour
     }
     void LateUpdate()
     {
+        //To move the ship down the wave
+        if (!drowning && collision != null && collision.gameObject.tag == "Wave" )
+        {
+            if (transform.localEulerAngles.z > 295)
+            {
+                //GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
+            }
+            
+            if (Input.GetKey(KeyCode.D))
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, 5, 0.2f), 0, 0);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, -5, 0.2f), 0, 0);
+            }
+        }
 
         //print(transform.localEulerAngles.z);
         // OnCollisionEnter too much rotation sink, dissable colide5       
@@ -46,6 +63,7 @@ public class Ship : MonoBehaviour
                 colider.enabled = false;
             }
 
+
             if (collision != null && collision.gameObject.tag == "Wave")
             {
                 //gameObject.GetComponent<Rigidbody>().drag = drag * 4;
@@ -54,7 +72,24 @@ public class Ship : MonoBehaviour
             //to sink by facing front
             //transform.LookAt(Vector3.down);
         }
+        else
+        {
+            foreach (Collider colider in GetComponents<Collider>())
+            {
+                colider.enabled = true;
+            }
+        }
+        
+        
 
+        //Respawn ship
+        if(transform.position.y < -7)
+        {
+            transform.position = new Vector3(1.37f, 0.09f, 0.7f);
+            transform.rotation = Quaternion.identity;
+            drowning = false;
+        }
+        
     }
 
     void OnCollisionEnter(Collision collision)
@@ -68,6 +103,30 @@ public class Ship : MonoBehaviour
 
         if (drowning && collision.gameObject.tag == "Wave")
         {
+
+            if (!Input.GetKeyDown(KeyCode.D) || !Input.GetKeyDown(KeyCode.A))
+            {
+                if (!drowning && collision != null && collision.gameObject.tag == "Wave")
+                {
+                    //print(" Rotation " + transform.localEulerAngles.z);
+                    if (transform.localEulerAngles.z > 295)
+                    {
+                        GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
+                    }
+                    if (transform.localEulerAngles.z < 45)
+                    {
+                        GetComponent<Rigidbody>().velocity = new Vector3((transform.localEulerAngles.z - 45) / 20, 0, 0);
+                    }
+                }
+            }
+        
+                //Sink slowly, by setting drag to very high when in water and drowning
+
+                if (collision.collider.bounds.Contains(transform.position))
+            {
+                print("point is inside collider");
+            }
+
             gameObject.GetComponent<Rigidbody>().drag = drag * 4;
             gameObject.GetComponent<Rigidbody>().angularDrag = 1;
             print("Drownging and colliding with " + collision.gameObject);
@@ -96,6 +155,7 @@ public class Ship : MonoBehaviour
 
         if (collision.gameObject.tag == "Bird")
         {
+
 
 
         }

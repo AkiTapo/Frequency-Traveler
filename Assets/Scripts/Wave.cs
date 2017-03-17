@@ -13,7 +13,7 @@ public class Wave : MonoBehaviour
     public int inputSwitch = 1;
     [Range(10, 120)]
     public int waveAmount;
-    [Range(9, 15)]
+    [Range(1, 15)]
     public float waveWidth;
 
     public GameObject waveShape;
