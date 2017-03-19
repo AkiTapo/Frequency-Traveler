@@ -5,15 +5,30 @@ using UnityEngine;
 public class Birds : MonoBehaviour {
 
     public bool alive;
+    bool died;
 	// Use this for initialization
 	void Start () {
         alive = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        //print("this bird is alive " + alive);
-	}
+	void LateUpdate()
+    {
+
+        if (!alive)
+        {
+            playDeath();
+        }
+    }
+
+    void playDeath()
+    {
+        if (!died) {
+            print("Bird died");
+            alive = false;
+            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<Animation>().Play("Die");
+            died = true;
+        }
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -28,10 +43,9 @@ public class Birds : MonoBehaviour {
 
         if (collision.gameObject.tag != "Border" && collision.gameObject)
         {
-            print("Bird died");
-            alive = false;
-            GetComponent<Rigidbody>().useGravity = true;
-            gameObject.GetComponent<Animation>().Play("Die");
+
+            playDeath();
+
 
             //Assign score
             if(collision.gameObject.tag == "Ship")
@@ -41,22 +55,15 @@ public class Birds : MonoBehaviour {
                 //score += 100;
             }
 
-            //Assign score
-
             if (collision.gameObject.tag == "Wave")
             {
                 Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), gameObject.GetComponent<Collider>(), true);
                 GetComponent<Rigidbody>().drag = 10;
-
             }
             else
             {
                 GetComponent<Rigidbody>().drag = 2;
             }
         }
-
-
-
-
     }
 }

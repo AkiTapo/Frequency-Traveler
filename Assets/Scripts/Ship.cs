@@ -30,6 +30,7 @@ public class Ship : MonoBehaviour
                 //GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
             }
             
+            //To controll ship with buttons, this overrides ship naturaly sliding down the wave
             if (Input.GetKey(KeyCode.D))
             {
                 GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, 5, 0.2f), 0, 0);
@@ -101,25 +102,26 @@ public class Ship : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts)
         {*/
 
+
+        if (!Input.GetKeyDown(KeyCode.D) || !Input.GetKeyDown(KeyCode.A))
+        {
+        if (!drowning && collision != null && collision.gameObject.tag == "Wave")
+        {
+            //print(" Rotation " + transform.localEulerAngles.z);
+            if (transform.localEulerAngles.z > 295)
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
+            }
+            if (transform.localEulerAngles.z < 45)
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3((transform.localEulerAngles.z - 45) / 20, 0, 0);
+            }
+        }
+        }
+
+
         if (drowning && collision.gameObject.tag == "Wave")
         {
-
-            if (!Input.GetKeyDown(KeyCode.D) || !Input.GetKeyDown(KeyCode.A))
-            {
-                if (!drowning && collision != null && collision.gameObject.tag == "Wave")
-                {
-                    //print(" Rotation " + transform.localEulerAngles.z);
-                    if (transform.localEulerAngles.z > 295)
-                    {
-                        GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
-                    }
-                    if (transform.localEulerAngles.z < 45)
-                    {
-                        GetComponent<Rigidbody>().velocity = new Vector3((transform.localEulerAngles.z - 45) / 20, 0, 0);
-                    }
-                }
-            }
-        
                 //Sink slowly, by setting drag to very high when in water and drowning
 
                 if (collision.collider.bounds.Contains(transform.position))
