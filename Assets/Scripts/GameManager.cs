@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public static bool startGame;
-    bool isPlaying;
     public GameObject ship, spawner, wave;
+    public static bool startGame;
+    public static float levelMovingSpeed;
+    [Range(0.01f, 10)]
+    public float levelSpeed;
+    [Range(4, 100)]
+    public float obstacleSpawnInterval;
+    [Range(0.01f, 10)]
+    public float birdSpeed;
+    [Range(1, 10)]
+    public float birdSpawnInterval;
+
+    bool isPlaying;
+
 
     // Use this for initialization
     void Start () {
@@ -20,6 +31,12 @@ public class GameManager : MonoBehaviour {
 	}
     void LateUpdate()
     {
+        //Assigning rock and bird moving speed, and making it randomize a bit.
+        levelMovingSpeed = levelSpeed / 70; 
+        Spawner.birdFlySpeed = birdSpeed;
+        Spawner.rockSpawnInterwal = obstacleSpawnInterval;
+        Spawner.birdSpawnInterval = birdSpawnInterval;
+
         if (startGame && !isPlaying)
         {
             isPlaying = true;

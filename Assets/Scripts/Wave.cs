@@ -122,6 +122,21 @@ public class Wave : MonoBehaviour
         //getHighestAmplitude();
         StartCoroutine(formWave());
 
+        if (Ship.drowning)
+        {
+                for (int i = 0; i < waveAmount; i++)
+            {
+                waves[i].GetComponent<Collider>().enabled = false;
+            }
+        }
+        if(Ship.shipReset)
+        {
+            print("IN");
+            for (int i = 0; i < waveAmount; i++)
+            {
+                waves[i].GetComponent<Collider>().enabled = true;
+            }
+        }
     }
 
     //Get maimum amplitude from all frequencies samples[]
@@ -200,7 +215,7 @@ public class Wave : MonoBehaviour
         }
         yield return new WaitForSeconds(10);
     }
-    
+
     //Get input from brain
     void brainRead()
     {
@@ -211,4 +226,5 @@ public class Wave : MonoBehaviour
 
 
 
-}
+
+    }

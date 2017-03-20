@@ -7,21 +7,20 @@ public class Spawner : MonoBehaviour
 {
 
 
-    public GameObject [] birds;
+    public GameObject[] birds;
     GameObject[] newBird;
     Animation birdFly;
     public int amountOfBirds = 10;
-    public float birdSpawnInterval = 5;
-    [Range (1,10)]
-    public int birdFlySpeed = 1;
+    public static float birdSpawnInterval = 5;
+    [Range(1, 10)]
+    public static float birdFlySpeed = 1;
 
-    public GameObject [] rocks;
+    public GameObject[] rocks;
     GameObject[] newRock;
     public int amountOfRocks = 10;
-    public float rockSpawnInterwal = 5;
-    [Range(1, 10)]
-    public int rockSpeed = 1;
+    public static float rockSpawnInterwal = 5;
     int rocksPresent;
+    int currentRock;
 
     int currentBird;
     float timer;
@@ -29,15 +28,12 @@ public class Spawner : MonoBehaviour
     float birdFlyAnimationSpeed = 2;
     Transform wave;
 
-    [Range(1, 10)]
-    public int levelMovingSPeed = 1;
-
 
     // Use this for initialization
     void Start()
     {
         newBird = new GameObject[amountOfBirds];
-        //rocks = new GameObject [3];
+        newRock = new GameObject[amountOfRocks];
     }
 
     // Update is called once per frame
@@ -46,7 +42,18 @@ public class Spawner : MonoBehaviour
         timer = Time.time;
 
         //print(Wave.minWaterLevelLocal + "Wave.minWaterLevelLocal");
+
         // Spawn birds
+        manageBirds();
+        //Spawn rocks
+        manageRocks();
+
+
+
+    }
+
+    void manageBirds()
+    {
         if (timer > lastSpawnedBird && newBird[currentBird] == null)
         {
             lastSpawnedBird = timer + birdSpawnInterval;
@@ -56,7 +63,6 @@ public class Spawner : MonoBehaviour
             birdFly = newBird[currentBird].GetComponent<Animation>();
             //print("currentBird id " + currentBird);
         }
-
         //Seems too much calcualtions, try changing.
         //Move birds and to increase currentBird
         for (int i = 0; i < amountOfBirds; i++)
@@ -64,7 +70,6 @@ public class Spawner : MonoBehaviour
             if (newBird[i] != null && newBird[i].GetComponent<Birds>().alive == true)
             {
                 newBird[i].GetComponent<Rigidbody>().velocity = new Vector3(-birdFlySpeed, 0, 0);
-
                 // when current bird is dead
                 if (newBird[i].GetComponent<Birds>().alive == false)
                 {
@@ -79,41 +84,42 @@ public class Spawner : MonoBehaviour
             GameObject.Destroy(newBird[currentBird]);
             print("Bird Destroyed");
         }
-
-
-
+    }
+    
+    void manageRocks()
+    {
         //Spawn rocks
-        if (timer > lastSpawnedRock)
+        if (timer > lastSpawnedRock && currentRock < amountOfRocks)
         {
-            lastSpawnedRock = timer + rockSpawnInterwal;
-            //newRock[0] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.back)) as GameObject;
+            lastSpawnedRock = timer + Random.Range(rockSpawnInterwal, rockSpawnInterwal + 10);
+            newRock[currentRock] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y + rocks[0].transform.localScale.y, transform.position.z), Quaternion.Euler(0,Random.Range(0, 360),0)) as GameObject;
             rocksPresent++;
+            currentRock++;
         }
 
         if (rocksPresent > 0)
         {
             for (int i = 0; i < rocksPresent; i++)
             {
-                //newRock[i].transform.position = new Vector3(rocks[i].transform.position.x - levelMovingSPeed, rocks[i].transform.position.y, rocks[i].transform.position.z);
-
+                if (newRock[i] != null)
+                {
+                    newRock[i].transform.position = new Vector3(newRock[i].transform.position.x - GameManager.levelMovingSpeed, newRock[i].transform.position.y, newRock[i].transform.position.z);
+                    //Kill Rock
+                    if (newRock[i].transform.position.x < -13)
+                    {
+                        Destroy(newRock[i]);
+                    }
+                }
             }
-
-
-            //Kill Rock
-
-
+           
+           
         }
-
-
-
-
-
-
     }
 
     void LateUpdate()
     {
-        if (birdFly != null) {
+        if (birdFly != null)
+        {
             birdFly["Fly"].speed = birdFlyAnimationSpeed * birdFlySpeed;
         }
     }
