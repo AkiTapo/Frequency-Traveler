@@ -78,7 +78,7 @@ public class Ship : MonoBehaviour
 
 
         //Respawn ship
-        if (transform.position.y < -7)
+        if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10)
         {
             transform.position = new Vector3(1.37f, 0.09f, 0.7f);
             transform.rotation = Quaternion.identity;
