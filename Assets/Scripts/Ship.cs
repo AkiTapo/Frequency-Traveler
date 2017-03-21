@@ -59,6 +59,7 @@ public class Ship : MonoBehaviour
             GetComponent<Rigidbody>().drag = drag;
         }
 
+        /*
         if (drowning)
         {
             if (collision != null && collision.gameObject.tag == "Wave")
@@ -76,7 +77,7 @@ public class Ship : MonoBehaviour
             }
         }
 
-
+        */
 
         //Respawn ship
         if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10)
@@ -150,30 +151,30 @@ public class Ship : MonoBehaviour
 
 
 
-        /*
-        if(drowningInWater)
-        for (int i = 0; i < 120; i++) {
-                if (collision.collider.bounds.Contains())
-                {
+            /*
+            if(drowningInWater)
+            for (int i = 0; i < 120; i++) {
+                    if (collision.collider.bounds.Contains())
+                    {
 
-                }
-        }*/
+                    }
+            }*/
 
-        //Sink slowly, by setting drag to very high when in water and drowning
-        /*
-        if (collision.collider.bounds.Contains(transform.position))
-        {
-            print("point is inside collider");
+            //Sink slowly, by setting drag to very high when in water and drowning
+            /*
+            if (collision.collider.bounds.Contains(transform.position))
+            {
+                print("point is inside collider");
+            }
+
+            if (collision.gameObject.tag == "Bird")
+            {
+
+
+
+            }
+            */
+            // }
+
         }
-
-        if (collision.gameObject.tag == "Bird")
-        {
-
-
-
-        }
-        */
-        // }
-
-    }
 }

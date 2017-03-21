@@ -43,20 +43,14 @@ public class Birds : MonoBehaviour {
 
         if (collision.gameObject.tag != "Border" && collision.gameObject)
         {
-
             //Assign score
             if (collision.gameObject.tag == "Ship" && alive)
             {
                 print("Colided with ship");
-                //Inside game manager
-                //score += 100;
                 GameManager.instance.score += 100;
             }
 
             playDeath();
-
-
-
 
             if (collision.gameObject.tag == "Wave")
             {

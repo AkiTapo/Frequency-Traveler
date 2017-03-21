@@ -39,6 +39,7 @@ public class Wave : MonoBehaviour
     // [Range(0f, 10f)]
     public int waveIntensity = 5;
     float waveY;
+    private bool recording;
 
 
     //Audio
@@ -76,11 +77,7 @@ public class Wave : MonoBehaviour
 
     void Awake()
     {
-        if (Microphone.devices.Length <= 0)
-        {
-            Debug.LogWarning("Microphone not connected!");
-        }
-        else
+        if (Microphone.devices.Length >= 0)
         {
             micConnected = true;
             //Get the default microphone recording capabilities  
@@ -94,60 +91,84 @@ public class Wave : MonoBehaviour
             minFreq = 200;
             audioSource = null;
             audioSource = GetComponent<AudioSource>();
-            audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
+            //audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
+        }
+        else
+        {
+            Debug.LogWarning("Microphone not connected!");
         }
     }
 
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
-        if (!GameManager.instance.isPlaying)
+
+        // Call once when game is pused
+        if (GameManager.instance.isPlaying == false)
         {
             audioSource.clip = null;
-
+            recording = false;
+            startedRecording = false;
         }
 
-        minWaterLevelLocal = minWaterLevel;
-        maxWaterLevelLocal = maxWaterLevel;
-
-        if (Input.GetKey("escape"))
+        //Call once when game starts or continues
+        if (GameManager.instance.isPlaying && !recording)
         {
-            Application.Quit();
-            audioSource = null;
+            recording = true;
+            audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
+
+            if (!startedRecording)
+            {
+                recordTimer = timer;
+                startedRecording = true;
+                audioSource.Play();
+            }
         }
-        timer = Time.time;
 
-        audioSource.GetSpectrumData(samples, 0, FFTWindow.Rectangular);
 
-        if (!startedRecording)
+
+        if (GameManager.instance.isPlaying){
+
+            timer = Time.time;
+
+            audioSource.GetSpectrumData(samples, 0, FFTWindow.Rectangular);
+            minWaterLevelLocal = minWaterLevel;
+            maxWaterLevelLocal = maxWaterLevel;
+            StartCoroutine(formWave());
+
+
+
+            if (Ship.drowning)
+            {
+                for (int i = 0; i < waveAmount; i++)
+                {
+                    waves[i].GetComponent<Collider>().enabled = false;
+                }
+            }
+            if (Ship.shipReset)
+            {
+                print("Ship respawned");
+                for (int i = 0; i < waveAmount; i++)
+                {
+                    waves[i].GetComponent<Collider>().enabled = true;
+                }
+            }
+
+
+        }
+        else
         {
-            //audioSource = null;
-            recordTimer = timer;
-            startedRecording = true;
-            audioSource.Play();
+            StopCoroutine(formWave());
+
         }
+
+
 
         //Get the highest from array
         //Push it and its surounding waves
         //getHighestAmplitude();
-        StartCoroutine(formWave());
 
-        if (Ship.drowning)
-        {
-                for (int i = 0; i < waveAmount; i++)
-            {
-                waves[i].GetComponent<Collider>().enabled = false;
-            }
-        }
-        if(Ship.shipReset)
-        {
-            print("IN");
-            for (int i = 0; i < waveAmount; i++)
-            {
-                waves[i].GetComponent<Collider>().enabled = true;
-            }
-        }
     }
 
     //Get maimum amplitude from all frequencies samples[]

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     public GameObject ship, spawner, wave;
     public bool isPlaying;
@@ -24,26 +25,35 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
 
-    void Awake () {
+    void Awake()
+    {
 
         if (instance == null)
         {
             instance = this;
-        }else
+        }
+        else
         {
             Destroy(this);
         }
         DontDestroyOnLoad(this);
     }
-	
+
     void LateUpdate()
     {
-        print("Score " + score);
+
+        //print("Score " + score);
         //Assigning rock and bird moving speed, and making it randomize a bit.
-        levelMovingSpeed = levelSpeed / 70; 
+        levelMovingSpeed = levelSpeed / 70;
         Spawner.birdFlySpeed = birdSpeed;
         Spawner.rockSpawnInterwal = obstacleSpawnInterval;
         Spawner.birdSpawnInterval = birdSpawnInterval;
+
+        //Controlls
+        if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
+        {
+            PauseGame();
+        }
     }
 
     public void StartGame()
@@ -57,19 +67,20 @@ public class GameManager : MonoBehaviour {
             ship.SetActive(true);
         }
     }
-    public void EndGame()
+    public void PauseGame()
     {
         if (isPlaying)
         {
             isPlaying = false;
-            print("Game Ended");
-            wave.SetActive(false);
+            print("Game Paused");
+            //wave.SetActive(false);
             spawner.SetActive(false);
-            ship.SetActive(false);
+            //ship.SetActive(false);
 
             //Destroy(wave);
             //Destroy(spawner);
             //Destroy(ship);
         }
+
     }
 }
