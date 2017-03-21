@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-
-
     public GameObject[] birds;
     GameObject[] newBird;
     Animation birdFly;
@@ -28,12 +26,18 @@ public class Spawner : MonoBehaviour
     float birdFlyAnimationSpeed = 2;
     Transform wave;
 
+    public static Spawner instance;
 
     // Use this for initialization
     void Start()
     {
         newBird = new GameObject[amountOfBirds];
         newRock = new GameObject[amountOfRocks];
+    }
+
+    void OnAwake()
+    {
+        instance = this;
     }
 
     // Update is called once per frame
@@ -56,12 +60,20 @@ public class Spawner : MonoBehaviour
     {
         if (timer > lastSpawnedBird && newBird[currentBird] == null)
         {
-            lastSpawnedBird = timer + birdSpawnInterval;
-            newBird[currentBird] = Instantiate(birds[0], new Vector3(transform.position.x, Random.Range(Wave.minWaterLevelLocal - 7, Wave.maxWaterLevelLocal - 11.4f), 0), Quaternion.LookRotation(Vector3.back)) as GameObject;
-            newBird[currentBird].GetComponent<Animation>().Play();
-            newBird[currentBird].GetComponent<Birds>().alive = true;
-            birdFly = newBird[currentBird].GetComponent<Animation>();
-            //print("currentBird id " + currentBird);
+            //Should check for all types of birds and rocks instead of first in array
+            if (birds[0] != null)
+            {
+                lastSpawnedBird = timer + birdSpawnInterval;
+                newBird[currentBird] = Instantiate(birds[0], new Vector3(transform.position.x, Random.Range(Wave.minWaterLevelLocal - 7, Wave.maxWaterLevelLocal - 11.4f), 0), Quaternion.LookRotation(Vector3.back)) as GameObject;
+                newBird[currentBird].GetComponent<Animation>().Play();
+                newBird[currentBird].GetComponent<Birds>().alive = true;
+                birdFly = newBird[currentBird].GetComponent<Animation>();
+                //print("currentBird id " + currentBird);
+            }
+            else
+            {
+                print("Insert bird object to the Spawner");
+            }
         }
         //Seems too much calcualtions, try changing.
         //Move birds and to increase currentBird
@@ -82,7 +94,7 @@ public class Spawner : MonoBehaviour
         if (newBird[currentBird] != null && (newBird[currentBird].transform.position.y < -2 * Wave.minWaterLevelLocal || newBird[currentBird].transform.position.x < -11))
         {
             GameObject.Destroy(newBird[currentBird]);
-            print("Bird Destroyed");
+            //print("Bird Destroyed");
         }
     }
     
@@ -91,10 +103,17 @@ public class Spawner : MonoBehaviour
         //Spawn rocks
         if (timer > lastSpawnedRock && currentRock < amountOfRocks)
         {
-            lastSpawnedRock = timer + Random.Range(rockSpawnInterwal, rockSpawnInterwal + 10);
-            newRock[currentRock] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y + rocks[0].transform.localScale.y, transform.position.z), Quaternion.Euler(0,Random.Range(0, 360),0)) as GameObject;
-            rocksPresent++;
-            currentRock++;
+            if (rocks[0] != null)
+            {
+                lastSpawnedRock = timer + Random.Range(rockSpawnInterwal, rockSpawnInterwal + 10);
+                newRock[currentRock] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y + rocks[0].transform.localScale.y, transform.position.z), Quaternion.Euler(0, Random.Range(0, 360), 0)) as GameObject;
+                rocksPresent++;
+                currentRock++;
+            }
+            else
+            {
+                print("Insert rock object into the Spawner");
+            }
         }
 
         if (rocksPresent > 0)
@@ -111,8 +130,6 @@ public class Spawner : MonoBehaviour
                     }
                 }
             }
-           
-           
         }
     }
 

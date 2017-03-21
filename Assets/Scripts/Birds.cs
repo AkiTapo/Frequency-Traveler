@@ -12,7 +12,6 @@ public class Birds : MonoBehaviour {
     }
 	void LateUpdate()
     {
-
         if (!alive)
         {
             playDeath();
@@ -32,7 +31,8 @@ public class Birds : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-
+        //oncolisionexit
+        //on colission stay
        // foreach (ContactPoint contact in collision.contacts)
        // {
             if (collision.gameObject.tag == "Border")
@@ -44,16 +44,19 @@ public class Birds : MonoBehaviour {
         if (collision.gameObject.tag != "Border" && collision.gameObject)
         {
 
-            playDeath();
-
-
             //Assign score
-            if(collision.gameObject.tag == "Ship")
+            if (collision.gameObject.tag == "Ship" && alive)
             {
                 print("Colided with ship");
                 //Inside game manager
                 //score += 100;
+                GameManager.instance.score += 100;
             }
+
+            playDeath();
+
+
+
 
             if (collision.gameObject.tag == "Wave")
             {

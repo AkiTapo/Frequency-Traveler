@@ -25,18 +25,18 @@ public class Wave : MonoBehaviour
 
     GameObject[] waves;
     float maxWave;
-    int  maxWaveIndex;
+    int maxWaveIndex;
     float expWaveHeight;
 
     [SerializeField]
     [Range(4, 100)]
     public int waveBlur = 15;
     [SerializeField]
-    [Range (0, 30)]
+    [Range(0, 30)]
     public float waveSpeed = 5f;
-    [Range(0.1f,10f)]
-   // public float wavesmoother = 5;
-   // [Range(0f, 10f)]
+    [Range(0.1f, 10f)]
+    // public float wavesmoother = 5;
+    // [Range(0f, 10f)]
     public int waveIntensity = 5;
     float waveY;
 
@@ -71,6 +71,11 @@ public class Wave : MonoBehaviour
         }
 
         //Check if there is at least one microphone connected  
+
+    }
+
+    void Awake()
+    {
         if (Microphone.devices.Length <= 0)
         {
             Debug.LogWarning("Microphone not connected!");
@@ -91,12 +96,18 @@ public class Wave : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
             audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
         }
-
     }
+
 
     // Update is called once per frame
     void LateUpdate()
     {
+        if (!GameManager.instance.isPlaying)
+        {
+            audioSource.clip = null;
+
+        }
+
         minWaterLevelLocal = minWaterLevel;
         maxWaterLevelLocal = maxWaterLevel;
 

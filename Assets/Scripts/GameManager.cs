@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public GameObject ship, spawner, wave;
-    public static bool startGame;
+    public bool isPlaying;
     public static float levelMovingSpeed;
     [Range(0.01f, 10)]
     public float levelSpeed;
@@ -15,29 +15,40 @@ public class GameManager : MonoBehaviour {
     public float birdSpeed;
     [Range(1, 10)]
     public float birdSpawnInterval;
+    public int score = 0;
 
-    bool isPlaying;
+    //bool isPlaying;
 
 
-    // Use this for initialization
-    void Start () {
-        
 
+    public static GameManager instance = null;
+
+
+    void Awake () {
+
+        if (instance == null)
+        {
+            instance = this;
+        }else
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
     void LateUpdate()
     {
+        print("Score " + score);
         //Assigning rock and bird moving speed, and making it randomize a bit.
         levelMovingSpeed = levelSpeed / 70; 
         Spawner.birdFlySpeed = birdSpeed;
         Spawner.rockSpawnInterwal = obstacleSpawnInterval;
         Spawner.birdSpawnInterval = birdSpawnInterval;
+    }
 
-        if (startGame && !isPlaying)
+    public void StartGame()
+    {
+        if (!isPlaying)
         {
             isPlaying = true;
             print("Game Started");
@@ -45,7 +56,10 @@ public class GameManager : MonoBehaviour {
             spawner.SetActive(true);
             ship.SetActive(true);
         }
-        if (!startGame && isPlaying)
+    }
+    public void EndGame()
+    {
+        if (isPlaying)
         {
             isPlaying = false;
             print("Game Ended");

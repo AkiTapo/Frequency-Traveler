@@ -27,19 +27,20 @@ public class Ship : MonoBehaviour
         //To move the ship down the wave
         if (!drowning && collision != null && collision.gameObject.tag == "Wave")
         {
-            if (transform.localEulerAngles.z > 295)
-            {
-                //GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
-            }
 
             //To controll ship with buttons, this overrides ship naturaly sliding down the wave
             if (Input.GetKey(KeyCode.D))
             {
+                //ORG
                 GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, 5, 0.2f), 0, 0);
+
+
             }
             if (Input.GetKey(KeyCode.A))
             {
-                GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, -5, 0.2f), 0, 0);
+
+                //GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, -5, 0.2f), 0, 0);
+                GetComponent<Rigidbody>().velocity = gameObject.transform.right*-1;
             }
         }
 
@@ -108,14 +109,20 @@ public class Ship : MonoBehaviour
         {
             if (!drowning && collision != null && collision.gameObject.tag == "Wave")
             {
+
+                //transform.forward()
                 //print(" Rotation " + transform.localEulerAngles.z);
+                
                 if (transform.localEulerAngles.z > 295)
                 {
-                    GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
+                    // ORG // GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
+                    GetComponent<Rigidbody>().velocity = gameObject.transform.right;
                 }
                 if (transform.localEulerAngles.z < 45)
+
                 {
-                    GetComponent<Rigidbody>().velocity = new Vector3((transform.localEulerAngles.z - 45) / 20, 0, 0);
+                    // ORG // GetComponent<Rigidbody>().velocity = new Vector3((transform.localEulerAngles.z - 45) / 20, 0, 0);
+                    GetComponent<Rigidbody>().velocity = gameObject.transform.right * -1;
                 }
             }
         }

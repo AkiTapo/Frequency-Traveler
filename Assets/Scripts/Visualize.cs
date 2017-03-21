@@ -18,6 +18,7 @@ public class Visualize : MonoBehaviour
     // Use this for initialization
 
     AudioSource audio;
+
     void Start()
     {
         // Just proper validation
