@@ -79,10 +79,10 @@ public class Ship : MonoBehaviour
 
         */
 
-        //Respawn ship
-        if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10)
+        //Respawn ship0
+        if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10 || Input.GetKey(KeyCode.R))
         {
-            transform.position = new Vector3(1.37f, 0.09f, 0.7f);
+            transform.position = new Vector3(- 6.87f, 0.09f, 0.7f);
             transform.rotation = Quaternion.identity;
             drowning = false;
             shipReset = true;
