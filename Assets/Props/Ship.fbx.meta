@@ -6,11 +6,21 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Ship
+    100004: Ship_rope
     400000: //RootNode
+    400002: Ship
+    400004: Ship_rope
     2300000: //RootNode
+    2300002: Ship
+    2300004: Ship_rope
     3300000: //RootNode
+    3300002: Ship
+    3300004: Ship_rope
     4300000: pCube4
     4300002: polySurface20
+    4300004: Ship
+    4300006: Ship_rope
   materials:
     importMaterials: 1
     materialName: 0
