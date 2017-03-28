@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public float birdSpeed;
     [Range(1, 10)]
     public float birdSpawnInterval;
-    public int score = 0;
+    private int score = 0;
 
     //bool isPlaying;
 
@@ -82,5 +82,18 @@ public class GameManager : MonoBehaviour
             //Destroy(ship);
         }
 
+    }
+    public void setScore(int addScore)
+    {
+        if (score + addScore >= 0)
+        {
+            score += addScore;
+        }
+
+    }
+
+    public int getScore()
+    {
+        return score;
     }
 }

@@ -39,7 +39,7 @@ public class Menu : MonoBehaviour
         //In Game
         if (GameManager.instance.isPlaying == true)
         {
-            GUI.Label(new Rect(Screen.width - Screen.width / 6, Screen.height / 50, 200, 50), "SCORE: " + GameManager.instance.score.ToString(), FTStyle);
+            GUI.Label(new Rect(Screen.width - Screen.width / 6, Screen.height / 50, 200, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
         }
     }
 }

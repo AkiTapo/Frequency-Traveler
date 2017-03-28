@@ -44,13 +44,16 @@ public class Ship : MonoBehaviour
             }
         }
 
+
         //print(transform.localEulerAngles.z);
         // OnCollisionEnter too much rotation sink, dissable colide5       
-        if (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45)
+        if (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 && !drowning || collision != null && collision.gameObject.tag == "Rock")
         {
             //
             //  GetComponent<Collider>()[0]
             drowning = true;
+            GameManager.instance.setScore(-50);
+            gameObject.GetComponent<Rigidbody>().drag = drag * 4;
             //print("Ship colider disabled");
         }
         else
@@ -79,7 +82,7 @@ public class Ship : MonoBehaviour
 
         */
 
-        //Respawn ship0
+        //Respawn ship
         if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10 || Input.GetKey(KeyCode.R))
         {
             transform.position = new Vector3(- 6.87f, 0.09f, 0.7f);
@@ -100,10 +103,6 @@ public class Ship : MonoBehaviour
     {
 
         this.collision = collision;
-        //print("Collldied");
-        /*
-        foreach (ContactPoint contact in collision.contacts)
-        {*/
 
 
         if (!Input.GetKeyDown(KeyCode.D) || !Input.GetKeyDown(KeyCode.A))
@@ -117,13 +116,13 @@ public class Ship : MonoBehaviour
                 if (transform.localEulerAngles.z > 295)
                 {
                     // ORG // GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
-                    GetComponent<Rigidbody>().velocity = gameObject.transform.right;
+                    GetComponent<Rigidbody>().velocity = gameObject.transform.right  * 2;
                 }
                 if (transform.localEulerAngles.z < 45)
 
                 {
                     // ORG // GetComponent<Rigidbody>().velocity = new Vector3((transform.localEulerAngles.z - 45) / 20, 0, 0);
-                    GetComponent<Rigidbody>().velocity = gameObject.transform.right * -1;
+                    GetComponent<Rigidbody>().velocity = gameObject.transform.right * -1 * 2;
                 }
             }
         }
@@ -138,17 +137,18 @@ public class Ship : MonoBehaviour
                 //print("point is inside collider");
             }
 
-            gameObject.GetComponent<Rigidbody>().drag = drag * 4;
-            gameObject.GetComponent<Rigidbody>().angularDrag = 1;
+            gameObject.GetComponent<Rigidbody>().drag = drag * 2;
+            gameObject.GetComponent<Rigidbody>().angularDrag = 0.4f;
             print("Drownging and colliding with " + collision.gameObject);
         }
 
+        /*
         if (collision.gameObject.tag == "Rock")
         {
             drowning = true;
             gameObject.GetComponent<Rigidbody>().drag = drag * 4;
         }
-
+        */
 
 
             /*
