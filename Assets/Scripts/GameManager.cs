@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public float birdSpawnInterval;
     private int score = 0;
     private int lives = 3;
+    public bool gameOver;
     
 
     //bool isPlaying;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-
+        print("Lives " + getLives());
         //print("Score " + score);
         //Assigning rock and bird moving speed, and making it randomize a bit.
         levelMovingSpeed = levelSpeed / 70;
@@ -56,6 +57,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
         {
             PauseGame();
+        }
+
+        if(lives == 0)
+        {
+            gameOver = true;
         }
     }
 
@@ -102,7 +108,10 @@ public class GameManager : MonoBehaviour
 
     public void setLives(int addLives)
     {
-        addLives += addLives;
+        if (lives + addLives >= 0)
+        {
+            lives += addLives;
+        }
     }
     public int getLives()
     {

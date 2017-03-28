@@ -146,7 +146,7 @@ public class Wave : MonoBehaviour
                     waves[i].GetComponent<Collider>().enabled = false;
                 }
             }
-            if (!Ship.drowning && !Ship.shipReset)
+            if (Ship.drowning == false)
             {
                 for (int i = 0; i < waveAmount; i++)
                 {

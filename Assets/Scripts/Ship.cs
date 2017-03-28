@@ -7,7 +7,7 @@ public class Ship : MonoBehaviour
     //public Vector3 myRotation;
     public int drag;
     public static bool drowning, shipReset;
-    //public bool drown;
+    public bool drown;
     bool drowningInWater;
     Collision collision;
     private float shipDrownTime, timer;
@@ -30,7 +30,7 @@ public class Ship : MonoBehaviour
 
     void LateUpdate()
     {
-        //drowning = drown;
+        drown = drowning;
         //To move the ship down the wave
         if (!drowning && collision != null && collision.gameObject.tag == "Wave")
         {
@@ -47,47 +47,27 @@ public class Ship : MonoBehaviour
             {
 
                 //GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(GetComponent<Rigidbody>().velocity.x, -5, 0.2f), 0, 0);
-                GetComponent<Rigidbody>().velocity = gameObject.transform.right*-1;
+                GetComponent<Rigidbody>().velocity = gameObject.transform.right * -1;
             }
         }
 
-
         //Drown 
-        if (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 && !drowning || collision != null && collision.gameObject.tag == "Rock" && !drowning)
+        if (!drowning && (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 || collision != null && collision.gameObject.tag == "Rock" ))
         {
-            if(collision != null && collision.gameObject.tag == "Rock" && !drowning)
+            if (collision != null && collision.gameObject.tag == "Rock" && !drowning)
             {
                 GameManager.instance.setScore(-50);
+                collision = null;
             }
+
             drowning = true;
+            GameManager.instance.setLives(-1);
             gameObject.GetComponent<Rigidbody>().drag = drag * 4;
             shipDrownTime = timer;
         }
-        else
-        {
-            //GetComponent<Collider>().enabled = true;
+        if (!drowning) { 
             GetComponent<Rigidbody>().drag = drag;
         }
-
-        /*
-        if (drowning)
-        {
-            if (collision != null && collision.gameObject.tag == "Wave")
-            {
-                //gameObject.GetComponent<Rigidbody>().drag = drag * 4;
-                //gameObject.GetComponent<Rigidbody>().angularDrag = 1;
-            }
-
-        }
-        else
-        {
-            foreach (Collider colider in GetComponents<Collider>())
-            {
-                colider.enabled = true;
-            }
-        }
-
-        */
 
         //Respawn ship
         if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10 || Input.GetKey(KeyCode.R))
@@ -102,12 +82,13 @@ public class Ship : MonoBehaviour
 
     void respawnShip()
     {
-            transform.position = new Vector3(-6.87f, 2f, 0.7f);
-            transform.rotation = Quaternion.identity;
-            drowning = false;
-            shipReset = true;
-            GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-            //drown = false;
+        transform.position = new Vector3(-6.87f, 1f, 0.7f);
+        GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        transform.rotation = Quaternion.identity;
+        drowning = false;
+        shipReset = true;
+        collision = null;
+        //drown = false;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -123,11 +104,11 @@ public class Ship : MonoBehaviour
 
                 //transform.forward()
                 //print(" Rotation " + transform.localEulerAngles.z);
-                
+
                 if (transform.localEulerAngles.z > 295)
                 {
                     // ORG // GetComponent<Rigidbody>().velocity = new Vector3((360 - transform.localEulerAngles.z) / 10, 0, 0);
-                    GetComponent<Rigidbody>().velocity = gameObject.transform.right  * 2;
+                    GetComponent<Rigidbody>().velocity = gameObject.transform.right * 2;
                 }
                 if (transform.localEulerAngles.z < 45)
 
@@ -153,39 +134,5 @@ public class Ship : MonoBehaviour
             print("Drownging and colliding with " + collision.gameObject);
         }
 
-        /*
-        if (collision.gameObject.tag == "Rock")
-        {
-            drowning = true;
-            gameObject.GetComponent<Rigidbody>().drag = drag * 4;
-        }
-        */
-
-
-            /*
-            if(drowningInWater)
-            for (int i = 0; i < 120; i++) {
-                    if (collision.collider.bounds.Contains())
-                    {
-
-                    }
-            }*/
-
-            //Sink slowly, by setting drag to very high when in water and drowning
-            /*
-            if (collision.collider.bounds.Contains(transform.position))
-            {
-                print("point is inside collider");
-            }
-
-            if (collision.gameObject.tag == "Bird")
-            {
-
-
-
-            }
-            */
-            // }
-
-        }
+    }
 }

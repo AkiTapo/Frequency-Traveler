@@ -6,9 +6,10 @@ public class Menu : MonoBehaviour
 {
 
 
-    public Texture2D startGameIcon;
+    public Texture2D startGameIcon, gameOver;
     public Texture2D livesIconFull, livesIconEmpty;
     private Texture2D[] liveIcons;
+    float opacity = 0;
 
 
 
@@ -46,9 +47,28 @@ public class Menu : MonoBehaviour
             //Lives
             for (int i = 0; i < 3; i++)
             {
-                GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34 , 34), livesIconFull);
+                GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34 , 34), livesIconEmpty);
             }
 
+            for (int i = 0; i < GameManager.instance.getLives(); i++)
+            {
+                GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34, 34), livesIconFull);
+            }
+
+            if (GameManager.instance.gameOver)
+            {
+                if(GUI.Button(new Rect(Screen.width / 2 - gameOver.width / 2, Screen.height / 2, 242, 60), gameOver) || Input.GetKeyDown(KeyCode.Return)){
+                    //Restart game
+                }
+                GameObject.Find("Plane").GetComponent<MeshRenderer>().enabled = true;
+                if (opacity < 0.8f)
+                {
+                    GameObject.Find("Plane").GetComponent<Renderer>().material.color = new Vector4(1, 1, 1, opacity += 0.005f);
+                }
+                GameObject.Find("Wave").GetComponent<Wave>().waveIntensity = 1;
+
+
+            }
         }
     }
 }
