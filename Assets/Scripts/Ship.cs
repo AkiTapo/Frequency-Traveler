@@ -10,17 +10,24 @@ public class Ship : MonoBehaviour
     //public bool drown;
     bool drowningInWater;
     Collision collision;
-    // Use this for initialization
-    void Start()
-    {
+    private float shipDrownTime, timer;
+    public int lives;
 
+    void Awake()
+    {
+        lives = GameManager.instance.getLives();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        timer = Time.time;
 
+        if (drowning && shipDrownTime + 3 < timer)
+        {
+            respawnShip();
+        }
     }
+
     void LateUpdate()
     {
         //drowning = drown;
@@ -45,16 +52,16 @@ public class Ship : MonoBehaviour
         }
 
 
-        //print(transform.localEulerAngles.z);
-        // OnCollisionEnter too much rotation sink, dissable colide5       
-        if (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 && !drowning || collision != null && collision.gameObject.tag == "Rock")
+        //Drown 
+        if (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 && !drowning || collision != null && collision.gameObject.tag == "Rock" && !drowning)
         {
-            //
-            //  GetComponent<Collider>()[0]
+            if(collision != null && collision.gameObject.tag == "Rock" && !drowning)
+            {
+                GameManager.instance.setScore(-50);
+            }
             drowning = true;
-            GameManager.instance.setScore(-50);
             gameObject.GetComponent<Rigidbody>().drag = drag * 4;
-            //print("Ship colider disabled");
+            shipDrownTime = timer;
         }
         else
         {
@@ -85,18 +92,22 @@ public class Ship : MonoBehaviour
         //Respawn ship
         if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10 || Input.GetKey(KeyCode.R))
         {
-            transform.position = new Vector3(- 6.87f, 0.09f, 0.7f);
-            transform.rotation = Quaternion.identity;
-            drowning = false;
-            shipReset = true;
-            GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-            //drown = false;
+            respawnShip();
         }
         else
         {
             shipReset = false;
         }
+    }
 
+    void respawnShip()
+    {
+            transform.position = new Vector3(-6.87f, 2f, 0.7f);
+            transform.rotation = Quaternion.identity;
+            drowning = false;
+            shipReset = true;
+            GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            //drown = false;
     }
 
     void OnCollisionEnter(Collision collision)

@@ -106,7 +106,8 @@ public class Spawner : MonoBehaviour
             if (rocks[0] != null)
             {
                 lastSpawnedRock = timer + Random.Range(rockSpawnInterwal, rockSpawnInterwal + 10);
-                newRock[currentRock] = Instantiate(rocks[0], new Vector3(transform.position.x, transform.position.y + rocks[0].transform.localScale.y, transform.position.z + 0.7f), Quaternion.Euler(0, Random.Range(0, 360), 0)) as GameObject;
+                newRock[currentRock] = Instantiate(rocks[Random.Range(0,4)], new Vector3(transform.position.x, transform.position.y + rocks[0].transform.localScale.y, transform.position.z + 0.7f), Quaternion.Euler(0, Random.Range(0, 360), 0)) as GameObject;
+                newRock[currentRock].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 rocksPresent++;
                 currentRock++;
             }

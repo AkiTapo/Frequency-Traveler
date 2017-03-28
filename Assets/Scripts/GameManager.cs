@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [Range(1, 10)]
     public float birdSpawnInterval;
     private int score = 0;
+    private int lives = 3;
+    
 
     //bool isPlaying;
 
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
         DontDestroyOnLoad(this);
+
     }
 
     void LateUpdate()
@@ -95,5 +98,14 @@ public class GameManager : MonoBehaviour
     public int getScore()
     {
         return score;
+    }
+
+    public void setLives(int addLives)
+    {
+        addLives += addLives;
+    }
+    public int getLives()
+    {
+        return lives;
     }
 }
