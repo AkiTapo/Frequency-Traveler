@@ -52,11 +52,15 @@ public class Ship : MonoBehaviour
         }
 
         //Drown 
-        if (!drowning && (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 || collision != null && collision.gameObject.tag == "Rock" ))
+        if (!drowning && (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 || collision != null && collision.gameObject.tag == "Rock"))
         {
             if (collision != null && collision.gameObject.tag == "Rock" && !drowning)
             {
-                GameManager.instance.setScore(-50);
+                //Remove 50 points if not game over
+                if (!GameManager.instance.gameOver)
+                {
+                    GameManager.instance.setScore(-50);
+                }
                 collision = null;
             }
 
@@ -65,7 +69,8 @@ public class Ship : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().drag = drag * 4;
             shipDrownTime = timer;
         }
-        if (!drowning) { 
+        if (!drowning)
+        {
             GetComponent<Rigidbody>().drag = drag;
         }
 
@@ -80,7 +85,7 @@ public class Ship : MonoBehaviour
         }
     }
 
-    void respawnShip()
+    public void respawnShip()
     {
         transform.position = new Vector3(-6.87f, 1f, 0.7f);
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);

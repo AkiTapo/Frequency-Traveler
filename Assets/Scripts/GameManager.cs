@@ -5,7 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public GameObject ship, spawner, wave;
+    public GameObject ship;
+    public GameObject spawner;
+    public GameObject wave;
+    GameObject spawnerInstance, shipInstance, waveInstance;
     public bool isPlaying;
     public static float levelMovingSpeed;
     [Range(0.01f, 10)]
@@ -19,7 +22,9 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private int lives = 3;
     public bool gameOver;
-    
+    public int shipLives = 3;
+    public  bool gameStartedOnce;
+
 
     //bool isPlaying;
 
@@ -27,20 +32,25 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null;
 
+    void Start()
+    {
+        spawnerInstance = null;
+        waveInstance = wave;
+        shipInstance = ship;
+    }
 
     void Awake()
     {
-
         if (instance == null)
         {
             instance = this;
         }
         else
         {
-            Destroy(this);
+            //Destroy(this);
         }
         DontDestroyOnLoad(this);
-
+        lives = shipLives;
     }
 
     void LateUpdate()
@@ -49,9 +59,9 @@ public class GameManager : MonoBehaviour
         //print("Score " + score);
         //Assigning rock and bird moving speed, and making it randomize a bit.
         levelMovingSpeed = levelSpeed / 70;
-        Spawner.birdFlySpeed = birdSpeed;
-        Spawner.rockSpawnInterwal = obstacleSpawnInterval;
-        Spawner.birdSpawnInterval = birdSpawnInterval;
+       // Spawner.birdFlySpeed = birdSpeed;
+       // Spawner.rockSpawnInterwal = obstacleSpawnInterval;
+       // Spawner.birdSpawnInterval = birdSpawnInterval;
 
         //Controlls
         if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
@@ -67,13 +77,20 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+
+        if (!gameStartedOnce)
+        {
+            InstantiateObjects();
+            gameStartedOnce = true;
+        }
+
         if (!isPlaying)
         {
             isPlaying = true;
             print("Game Started");
-            wave.SetActive(true);
-            spawner.SetActive(true);
-            ship.SetActive(true);
+            waveInstance.SetActive(true);
+            spawnerInstance.SetActive(true);
+            shipInstance.SetActive(true);
         }
     }
     public void PauseGame()
@@ -82,18 +99,57 @@ public class GameManager : MonoBehaviour
         {
             isPlaying = false;
             print("Game Paused");
-            //wave.SetActive(false);
-            spawner.SetActive(false);
-            //ship.SetActive(false);
-
-            //Destroy(wave);
-            //Destroy(spawner);
-            //Destroy(ship);
+            spawnerInstance.SetActive(false);
         }
 
     }
+    public void RestartGame()
+    {
+        destroyObjects();
+        InstantiateObjects();
+        gameOver = false;
+        setScore(0);
+        setLives(3);
+
+    }
+
+
+    void destroyObjects()
+    {
+        GameObject[] rocksDestroy = GameObject.FindGameObjectsWithTag("Rock"); 
+        foreach (GameObject rock in rocksDestroy)
+        {
+            Destroy(rock);
+        }
+        GameObject[] birdsDestroy = GameObject.FindGameObjectsWithTag("Bird");
+        foreach (GameObject bird in birdsDestroy)
+        {
+            Destroy(bird);
+        }
+        Destroy(shipInstance);
+        Destroy(spawnerInstance);
+    }
+   
+    
+    void InstantiateObjects()
+    {
+        shipInstance = Instantiate(ship, new Vector3(12.25f, -5.78f, 0), Quaternion.identity);
+        spawnerInstance = Instantiate(spawner, new Vector3(12.25f, -5.78f, 0), Quaternion.identity);
+
+        spawnerInstance.GetComponent<Spawner>().enabled = true;
+        shipInstance.GetComponent<Ship>().enabled = true;
+        spawnerInstance.SetActive(true);
+        shipInstance.SetActive(true);
+        
+    }
+
+
     public void setScore(int addScore)
     {
+        if(addScore == 0)
+        {
+            score = 0;
+        }
         if (score + addScore >= 0)
         {
             score += addScore;

@@ -26,7 +26,7 @@ public class Spawner : MonoBehaviour
     float birdFlyAnimationSpeed = 2;
     Transform wave;
 
-    public static Spawner instance;
+    //public static Spawner instance;
 
     // Use this for initialization
     void Start()
@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
 
     void OnAwake()
     {
-        instance = this;
+        //instance = this;
     }
 
     // Update is called once per frame
@@ -51,9 +51,6 @@ public class Spawner : MonoBehaviour
         manageBirds();
         //Spawn rocks
         manageRocks();
-
-
-
     }
 
     void manageBirds()
@@ -93,7 +90,7 @@ public class Spawner : MonoBehaviour
 
         if (newBird[currentBird] != null && (newBird[currentBird].transform.position.y < -2 * Wave.minWaterLevelLocal || newBird[currentBird].transform.position.x < -11))
         {
-            GameObject.Destroy(newBird[currentBird]);
+            Destroy(newBird[currentBird]);
             //print("Bird Destroyed");
         }
     }

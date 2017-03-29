@@ -16,6 +16,11 @@ public class Birds : MonoBehaviour {
         {
             playDeath();
         }
+        
+        if(GameManager.instance.spawner == null)
+        {
+           // Destroy(this);
+        }
     }
 
     void playDeath()
@@ -47,7 +52,10 @@ public class Birds : MonoBehaviour {
             if (collision.gameObject.tag == "Ship" && alive)
             {
                 print("Colided with ship");
-                GameManager.instance.setScore(100);
+                if (!GameManager.instance.gameOver)
+                {
+                    GameManager.instance.setScore(100);
+                }
             }
 
             playDeath();
