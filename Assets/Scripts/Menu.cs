@@ -56,7 +56,7 @@ public class Menu : MonoBehaviour
 
             if (!GameManager.instance.gameStartedOnce)
             {
-                if (GUI.Button(new Rect(Screen.width / 2 - startGameIcon.width / 4, Screen.height / 2 - startGameIcon.height, startGameIcon.width / 2, startGameIcon.height / 2), startGameIcon) || Input.GetKeyDown(KeyCode.Return))
+                if (GUI.Button(new Rect(Screen.width / 2 - startGameIcon.width / 4, Screen.height / 2 + startGameIcon.height * 0.2f, startGameIcon.width / 2, startGameIcon.height / 2), startGameIcon) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.StartGame();
                 }
