@@ -6,11 +6,12 @@ public class Menu : MonoBehaviour
 {
 
 
-    public Texture2D startGameIcon, resumeGame, restartGame, gameOver;
+    public Texture2D startGameIcon, resumeGame, restartGame, menuLogo;
     public Texture2D livesIconFull, livesIconEmpty;
     private Texture2D[] liveIcons;
     float opacity = 0;
     public GameObject overScreen;
+    bool gameRestarted;
 
 
 
@@ -31,7 +32,7 @@ public class Menu : MonoBehaviour
         GUIStyle FTStyle = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText1 = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText2 = new GUIStyle(GUI.skin.label);
-        Font gameFont = (Font)Resources.Load("Fonts/ostrich-regular", typeof(Font));
+        Font gameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
         Font endGameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
 
         FTStyle.font = gameFont;
@@ -40,7 +41,7 @@ public class Menu : MonoBehaviour
 
         gameOverText1.font = endGameFont;
         gameOverText2.font = endGameFont;
-        gameOverText2.normal.textColor = new Color32(0xff, 0x30, 0x00, 0xFF); // Red ff3000
+        gameOverText2.normal.textColor = new Color32(0xff, 0x52, 0x2a, 0xFF); // Red ff3000 // ff522a
         gameOverText1.normal.textColor = new Color32(0xff, 0xc3, 0x8e, 0xFF); // Light yellow ffc38e
         gameOverText1.alignment = TextAnchor.MiddleCenter;
         gameOverText2.alignment = TextAnchor.MiddleCenter;
@@ -51,27 +52,39 @@ public class Menu : MonoBehaviour
         //Main Menu
         if (GameManager.instance.isPlaying == false)
         {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - menuLogo.width / 2, menuLogo.height / 4, menuLogo.width, menuLogo.height), menuLogo);
+
             if (!GameManager.instance.gameStartedOnce)
             {
-                if (GUI.Button(new Rect(Screen.width / 2 - gameOver.width / 2, Screen.height / 2 - startGameIcon.height / 2, startGameIcon.width / 2, startGameIcon.height / 2), startGameIcon) || Input.GetKeyDown(KeyCode.Return))
+                if (GUI.Button(new Rect(Screen.width / 2 - startGameIcon.width / 4, Screen.height / 2 - startGameIcon.height, startGameIcon.width / 2, startGameIcon.height / 2), startGameIcon) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.StartGame();
                 }
+                //menuLogo
+
             }
             else
             {
-                if (GUI.Button(new Rect(Screen.width / 2 - gameOver.width / 2, Screen.height / 2 - startGameIcon.height / 4, startGameIcon.width / 2, startGameIcon.height / 2), resumeGame) || Input.GetKeyDown(KeyCode.Return))
+
+                if (GUI.Button(new Rect(Screen.width / 2 - resumeGame.width / 4, Screen.height / 2 - restartGame.height / 2, resumeGame.width / 2, resumeGame.height / 2), resumeGame) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.StartGame();
                 }
+                if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    GameManager.instance.RestartGame();
+                    GameManager.instance.isPlaying = true;
+                }
+
             }
+
             fadeInScreen(1);
         }
 
         //In Game
         if (GameManager.instance.isPlaying == true)
         {
-            if (!GameManager.instance.gameOver)
+            if (!GameManager.instance.gameOver )
             {
                 GUI.Label(new Rect(Screen.width / 25, Screen.height / 50, 200, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
 
@@ -80,7 +93,6 @@ public class Menu : MonoBehaviour
                 {
                     GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34, 34), livesIconEmpty);
                 }
-
                 for (int i = 0; i < GameManager.instance.getLives(); i++)
                 {
                     GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34, 34), livesIconFull);
@@ -95,9 +107,10 @@ public class Menu : MonoBehaviour
                 GUI.Label(new Rect(Screen.width / 2 - Screen.width / 5 / 2, Screen.height - Screen.height / 1.2f + Screen.height / 10, Screen.width / 5, Screen.height / 10), "Your score is", gameOverText1);
                 GUI.Label(new Rect(Screen.width / 2 - Screen.width / 5 / 2, Screen.height - Screen.height / 1.2f + Screen.height / 10, Screen.width / 5, Screen.height / 4), GameManager.instance.getScore().ToString(), gameOverText1);
 
-                if (GUI.Button(new Rect(Screen.width / 2 - gameOver.width / 2, Screen.height / 2, gameOver.width, gameOver.height), restartGame) || Input.GetKeyDown(KeyCode.Return))
+                if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.RestartGame();
+                    GameManager.instance.isPlaying = true;
                 }
 
                 GameObject.Find("Wave").GetComponent<Wave>().waveIntensity = 1;
@@ -136,7 +149,7 @@ public class Menu : MonoBehaviour
             case 3:
                 if (1f > opacity)
                 {
-                    overScreen.GetComponent<Renderer>().material.color = new Vector4(1, 1, 1, opacity += 0.005f);
+                    overScreen.GetComponent<Renderer>().material.color = new Vector4(0, 0, 1, opacity += 0.005f);
                 }
                 break;
 

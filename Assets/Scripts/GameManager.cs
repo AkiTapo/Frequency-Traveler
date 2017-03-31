@@ -168,6 +168,10 @@ public class GameManager : MonoBehaviour
         {
             lives += addLives;
         }
+        if(addLives == 3)
+        {
+            lives = 3;
+        }
     }
     public int getLives()
     {

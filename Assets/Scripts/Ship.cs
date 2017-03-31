@@ -22,7 +22,7 @@ public class Ship : MonoBehaviour
     {
         timer = Time.time;
 
-        if (drowning && shipDrownTime + 3 < timer)
+        if (drowning && shipDrownTime + 4 < timer)
         {
             respawnShip();
         }
