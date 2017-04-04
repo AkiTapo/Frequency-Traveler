@@ -20,9 +20,13 @@ public class Spawner : MonoBehaviour
     int rocksPresent;
     int currentRock;
 
+    public GameObject[] boxes;
+    GameObject[] newBox;
+
+
     int currentBird;
     float timer;
-    float lastSpawnedBird, lastSpawnedRock;
+    float lastSpawnedBird, lastSpawnedRock, lastSpawnBox;
     float birdFlyAnimationSpeed = 2;
     Transform wave;
 
@@ -128,6 +132,16 @@ public class Spawner : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    //Control parachute boxes
+    void manageBoxes()
+    {
+        if(timer > lastSpawnBox + 3)
+        {
+            newBox[0] = Instantiate(boxes[0], new Vector3(), Quaternion.LookRotation(Vector3.down)) as GameObject;
+
         }
     }
 
