@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        print("Lives " + getLives());
+        //print("Lives " + getLives());
         //print("Score " + score);
         //Assigning rock and bird moving speed, and making it randomize a bit.
         levelMovingSpeed = levelSpeed / 70;
