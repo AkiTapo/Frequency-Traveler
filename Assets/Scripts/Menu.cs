@@ -65,11 +65,12 @@ public class Menu : MonoBehaviour
             }
             else
             {
-
+                // Resume button
                 if (GUI.Button(new Rect(Screen.width / 2 - resumeGame.width / 4, Screen.height / 2 - restartGame.height / 2, resumeGame.width / 2, resumeGame.height / 2), resumeGame) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.StartGame();
                 }
+                //Restart button
                 if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.RestartGame();

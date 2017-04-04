@@ -40,12 +40,13 @@ public class Wave : MonoBehaviour
     public int waveIntensity = 5;
     float waveY;
     private bool recording;
-
+    [Range (0,1)]
+    public int micSwitch;
 
     //Audio
     private AudioSource audioSource;
     private bool micConnected = false;
-    private int minFreq;
+    private int minFreq = 2000;
     private int maxFreq;
     bool playingAudio, startedRecording;
     float timer;
@@ -82,13 +83,14 @@ public class Wave : MonoBehaviour
             micConnected = true;
             //Get the default microphone recording capabilities  
             Microphone.GetDeviceCaps(null, out minFreq, out maxFreq);
+            
 
             //According to the documentation, if minFreq and maxFreq are zero, the microphone supports any frequency...  
             if (minFreq == 0 && maxFreq == 0)
             {
                 maxFreq = 44100;
             }
-            minFreq = 200;
+            minFreq = 2000;
             audioSource = null;
             audioSource = GetComponent<AudioSource>();
             //audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
@@ -116,7 +118,7 @@ public class Wave : MonoBehaviour
         if (GameManager.instance.isPlaying && !recording)
         {
             recording = true;
-            audioSource.clip = Microphone.Start(null, true, (int)1000, maxFreq);
+            audioSource.clip = Microphone.Start(null, true, 5000, maxFreq);
 
             if (!startedRecording)
             {
@@ -132,7 +134,7 @@ public class Wave : MonoBehaviour
 
             timer = Time.time;
 
-            audioSource.GetSpectrumData(samples, 0, FFTWindow.Rectangular);
+            audioSource.GetSpectrumData(samples, micSwitch, FFTWindow.Rectangular);
             minWaterLevelLocal = minWaterLevel;
             maxWaterLevelLocal = maxWaterLevel;
             StartCoroutine(formWave());

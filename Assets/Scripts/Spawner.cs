@@ -22,6 +22,8 @@ public class Spawner : MonoBehaviour
 
     public GameObject[] boxes;
     GameObject[] newBox;
+    public int amountOfBoxes;
+    public int boxSpawnInterval;
 
 
     int currentBird;
@@ -37,6 +39,7 @@ public class Spawner : MonoBehaviour
     {
         newBird = new GameObject[amountOfBirds];
         newRock = new GameObject[amountOfRocks];
+        newBox = new GameObject[amountOfBoxes];
     }
 
     void OnAwake()
@@ -55,6 +58,8 @@ public class Spawner : MonoBehaviour
         manageBirds();
         //Spawn rocks
         manageRocks();
+        //Spawn collectable parashutes
+        manageBoxes();
     }
 
     void manageBirds()
@@ -138,9 +143,10 @@ public class Spawner : MonoBehaviour
     //Control parachute boxes
     void manageBoxes()
     {
-        if(timer > lastSpawnBox + 3)
+        if(timer > lastSpawnBox + boxSpawnInterval)
         {
-            newBox[0] = Instantiate(boxes[0], new Vector3(), Quaternion.LookRotation(Vector3.down)) as GameObject;
+            lastSpawnBox = timer;
+            newBox[0] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.LookRotation(Vector3.down)) as GameObject;
 
         }
     }

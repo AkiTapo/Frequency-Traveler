@@ -87,6 +87,7 @@
     <Compile Include="Assets\FarlandSkies\Demo\Scripts\Skybox\SkyboxRotator.cs" />
     <Compile Include="Assets\Scripts\AudioSourceGetSpectrumDataExample.cs" />
     <Compile Include="Assets\Scripts\Birds.cs" />
+    <Compile Include="Assets\Scripts\Boxes.cs" />
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
