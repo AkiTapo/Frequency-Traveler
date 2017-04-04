@@ -32,12 +32,12 @@ public class Menu : MonoBehaviour
         GUIStyle FTStyle = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText1 = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText2 = new GUIStyle(GUI.skin.label);
-        Font gameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
+		Font gameFont = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font));
         Font endGameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
 
         FTStyle.font = gameFont;
-        FTStyle.fontSize = 30;
-        FTStyle.normal.textColor = new Color32(0x38, 0x66, 0x78, 0xFF); //#386678 - BLUE; ffb502 - Yellow
+        FTStyle.fontSize = 50;
+        FTStyle.normal.textColor = new Color32(0x18, 0x34, 0x41, 0xFF); //#386678 - BLUE; ffb502 - Yellow
 
         gameOverText1.font = endGameFont;
         gameOverText2.font = endGameFont;
@@ -92,11 +92,11 @@ public class Menu : MonoBehaviour
                 //Lives
                 for (int i = 0; i < 3; i++)
                 {
-                    GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34, 34), livesIconEmpty);
+                    GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 44, 44), livesIconEmpty);
                 }
                 for (int i = 0; i < GameManager.instance.getLives(); i++)
                 {
-                    GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 34, 34), livesIconFull);
+                    GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 44, 44), livesIconFull);
                 }
 
             }
