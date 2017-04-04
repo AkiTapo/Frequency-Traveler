@@ -146,7 +146,7 @@ public class Spawner : MonoBehaviour
         if(timer > lastSpawnBox + boxSpawnInterval)
         {
             lastSpawnBox = timer;
-            newBox[0] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.LookRotation(Vector3.down)) as GameObject;
+            newBox[0] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.identity) as GameObject;
 
         }
     }
