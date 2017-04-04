@@ -27,7 +27,7 @@ public class Menu : MonoBehaviour
 
     void OnGUI()
     {
-
+        print(Screen.width);
         //Create my style
         GUIStyle FTStyle = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText1 = new GUIStyle(GUI.skin.label);
@@ -36,7 +36,7 @@ public class Menu : MonoBehaviour
         Font endGameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
 
         FTStyle.font = gameFont;
-        FTStyle.fontSize = 50;
+        FTStyle.fontSize = 50 * Screen.width / 2560;
         FTStyle.normal.textColor = new Color32(0x18, 0x34, 0x41, 0xFF); //#386678 - BLUE; ffb502 - Yellow
 
         gameOverText1.font = endGameFont;
@@ -87,7 +87,7 @@ public class Menu : MonoBehaviour
         {
             if (!GameManager.instance.gameOver )
             {
-                GUI.Label(new Rect(Screen.width / 25, Screen.height / 50, 200, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
+                GUI.Label(new Rect(Screen.width / 25, Screen.height / 50,300, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
 
                 //Lives
                 for (int i = 0; i < 3; i++)
@@ -121,7 +121,6 @@ public class Menu : MonoBehaviour
             {
                 fadeInScreen(2);
             }
-
 
 
         }
