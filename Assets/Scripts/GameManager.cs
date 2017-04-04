@@ -59,9 +59,9 @@ public class GameManager : MonoBehaviour
         //print("Score " + score);
         //Assigning rock and bird moving speed, and making it randomize a bit.
         levelMovingSpeed = levelSpeed / 70;
-       // Spawner.birdFlySpeed = birdSpeed;
-       // Spawner.rockSpawnInterwal = obstacleSpawnInterval;
-       // Spawner.birdSpawnInterval = birdSpawnInterval;
+        Spawner.birdFlySpeed = birdSpeed;
+        Spawner.rockSpawnInterwal = obstacleSpawnInterval;
+        Spawner.birdSpawnInterval = birdSpawnInterval;
 
         //Controlls
         if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
@@ -176,5 +176,29 @@ public class GameManager : MonoBehaviour
     public int getLives()
     {
         return lives;
+    }
+
+
+    public void controlGameDificulity(int difficulty)
+    {
+        switch (difficulty)
+        {
+            //Increase difficulty
+            case 1:
+                levelSpeed += 0.1f;
+                obstacleSpawnInterval -= 1;
+                birdSpeed += 0.1f;
+                obstacleSpawnInterval -= 0.5f;
+
+                break;
+            //decrease difficulty
+            case 2:
+                levelSpeed -= 0.1f;
+                obstacleSpawnInterval += 1;
+                birdSpeed += 0.1f;
+                obstacleSpawnInterval += 0.5f;
+
+                break;
+        }
     }
 }

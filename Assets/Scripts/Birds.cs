@@ -55,6 +55,7 @@ public class Birds : MonoBehaviour {
                 if (!GameManager.instance.gameOver)
                 {
                     GameManager.instance.setScore(100);
+                    GameManager.instance.controlGameDificulity(1);
                 }
             }
 

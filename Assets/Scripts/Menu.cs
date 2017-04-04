@@ -45,8 +45,8 @@ public class Menu : MonoBehaviour
         gameOverText1.normal.textColor = new Color32(0xff, 0xc3, 0x8e, 0xFF); // Light yellow ffc38e
         gameOverText1.alignment = TextAnchor.MiddleCenter;
         gameOverText2.alignment = TextAnchor.MiddleCenter;
-        gameOverText1.fontSize = 60;
-        gameOverText2.fontSize = 80;
+        gameOverText1.fontSize = 60 * Screen.width / 1920;
+        gameOverText2.fontSize = 80 * Screen.width / 1920;
         GUI.backgroundColor = Color.clear;
 
         //Main Menu
