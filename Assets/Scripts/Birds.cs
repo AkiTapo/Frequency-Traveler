@@ -6,8 +6,9 @@ public class Birds : MonoBehaviour {
 
     public bool alive;
     bool died;
-	// Use this for initialization
-	void Start () {
+    Vector3 eventCollisionPoint;
+    // Use this for initialization
+    void Start () {
         alive = true;
     }
 	void LateUpdate()
@@ -51,11 +52,13 @@ public class Birds : MonoBehaviour {
             //Assign score
             if (collision.gameObject.tag == "Ship" && alive)
             {
-                print("Colided with ship");
+                print("Colided with the ship");
                 if (!GameManager.instance.gameOver)
                 {
+                    ContactPoint contact = collision.contacts[0];
                     GameManager.instance.setScore(100);
-                    GameManager.instance.controlGameDificulity(1);
+                    GameManager.instance.indicateEvent = true;
+                    GameManager.instance.eventCollisionPoint = contact.point;
                 }
             }
 

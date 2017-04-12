@@ -12,28 +12,36 @@ public class Menu : MonoBehaviour
     float opacity = 0;
     public GameObject overScreen;
     bool gameRestarted;
-
+    int maxLives;
+    Vector3 eventCollisionPoint;
+    Camera camera;
+    int initialEventFontSize, tempEventFontSize;
+    float eventFontTransparency = 1;
 
 
     void Start()
     {
-
         liveIcons = new Texture2D[2];
         overScreen = Instantiate(overScreen, new Vector3(0, 0, -2.39f), Quaternion.identity) as GameObject;
         overScreen.transform.localRotation = new Quaternion(0, 90, -90, 0);
         overScreen.GetComponent<Renderer>().material.color = new Vector4(0.5f, 0, 0, 0);
-
+        camera = FindObjectOfType<Camera>();
+        initialEventFontSize = 25 * Screen.width / 1920;
+        tempEventFontSize = initialEventFontSize /10;
     }
 
     void OnGUI()
     {
-        print(Screen.width);
         //Create my style
+        //Collision event font
+        GUIStyle eventStyle = new GUIStyle(GUI.skin.label);
         GUIStyle FTStyle = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText1 = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText2 = new GUIStyle(GUI.skin.label);
 		Font gameFont = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font));
         Font endGameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
+
+        eventStyle.font = gameFont;
 
         FTStyle.font = gameFont;
         FTStyle.fontSize = 50 * Screen.width / 2560;
@@ -47,6 +55,8 @@ public class Menu : MonoBehaviour
         gameOverText2.alignment = TextAnchor.MiddleCenter;
         gameOverText1.fontSize = 60 * Screen.width / 1920;
         gameOverText2.fontSize = 80 * Screen.width / 1920;
+
+
         GUI.backgroundColor = Color.clear;
 
         //Main Menu
@@ -89,16 +99,40 @@ public class Menu : MonoBehaviour
             {
                 GUI.Label(new Rect(Screen.width / 25, Screen.height / 50,300, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
 
-                //Lives
-                for (int i = 0; i < 3; i++)
+                if (GameManager.instance.getLives() > maxLives)
+                {
+                    maxLives = GameManager.instance.getLives();
+                }
+                //Lives icon Empty
+                for (int i = 0; i < maxLives; i++)
                 {
                     GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 44, 44), livesIconEmpty);
                 }
+                //Lives icon Full
                 for (int i = 0; i < GameManager.instance.getLives(); i++)
                 {
                     GUI.DrawTexture(new Rect(Screen.width - Screen.width / 6 + (35 * i), Screen.height / 50, 44, 44), livesIconFull);
                 }
 
+                //Indicate what collision with game object does
+                if (GameManager.instance.indicateEvent)
+                {
+                    eventCollisionPoint = camera.WorldToScreenPoint(GameManager.instance.eventCollisionPoint);
+
+                    eventStyle.fontSize = tempEventFontSize++;
+                    //eventStyle.font.material.color = new Vector4 (eventStyle.font.material.color.r, eventStyle.font.material.color.g, eventStyle.font.material.color.b, eventFontTransparency- 0.01f); 
+                    eventFontTransparency -= 0.01f;
+                    eventStyle.normal.textColor = new Vector4((255 - 16) / 255, (255 - 51) / 255, (255 - 16) / 255, eventFontTransparency);
+
+                    GUI.Label(new Rect(eventCollisionPoint.x, Screen.height - eventCollisionPoint.y, Screen.width, Screen.height), "Boom!", eventStyle);
+
+
+                }
+                else
+                {
+                    tempEventFontSize = initialEventFontSize;
+                    eventFontTransparency = 1;
+                }
             }
             //Game over screen
             if (GameManager.instance.gameOver)
@@ -125,6 +159,7 @@ public class Menu : MonoBehaviour
 
         }
     }
+    //Fade In screen, used when game starts or ends
     void fadeInScreen(int fadeIn)
     {
         //GameObject.Find("Plane").GetComponent<MeshRenderer>().enabled = true;

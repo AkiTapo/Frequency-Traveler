@@ -51,7 +51,7 @@ public class Ship : MonoBehaviour
             }
         }
 
-        //Drown 
+        //Drown when flip or when collided with rock
         if (!drowning && (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 || collision != null && collision.gameObject.tag == "Rock"))
         {
             if (collision != null && collision.gameObject.tag == "Rock" && !drowning)
@@ -60,6 +60,9 @@ public class Ship : MonoBehaviour
                 if (!GameManager.instance.gameOver)
                 {
                     GameManager.instance.setScore(-50);
+                    ContactPoint contact = collision.contacts[0];
+                    GameManager.instance.indicateEvent = true;
+                    GameManager.instance.eventCollisionPoint = contact.point;
                 }
                 collision = null;
             }

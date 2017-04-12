@@ -23,8 +23,12 @@ public class GameManager : MonoBehaviour
     private int lives = 3;
     public bool gameOver;
     public int shipLives = 3;
-    public  bool gameStartedOnce;
-
+    public bool gameStartedOnce;
+    public int boxSpawnInterval;
+    int getPrize;
+    public bool indicateEvent;
+    public Vector3 eventCollisionPoint;
+    float timer, eventCollisionTime;
 
     //bool isPlaying;
 
@@ -52,6 +56,19 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         lives = shipLives;
     }
+    void Update()
+    {
+        timer = Time.time;
+
+        if (indicateEvent && eventCollisionTime + 2 < timer)
+        {
+            indicateEvent = false;
+        }
+        if (!indicateEvent)
+        {
+            eventCollisionTime = timer;
+        }
+    }
 
     void LateUpdate()
     {
@@ -69,7 +86,7 @@ public class GameManager : MonoBehaviour
             PauseGame();
         }
 
-        if(lives == 0)
+        if (lives == 0)
         {
             gameOver = true;
         }
@@ -116,7 +133,7 @@ public class GameManager : MonoBehaviour
 
     void destroyObjects()
     {
-        GameObject[] rocksDestroy = GameObject.FindGameObjectsWithTag("Rock"); 
+        GameObject[] rocksDestroy = GameObject.FindGameObjectsWithTag("Rock");
         foreach (GameObject rock in rocksDestroy)
         {
             Destroy(rock);
@@ -129,24 +146,23 @@ public class GameManager : MonoBehaviour
         Destroy(shipInstance);
         Destroy(spawnerInstance);
     }
-   
-    
+
+
     void InstantiateObjects()
     {
         shipInstance = Instantiate(ship, new Vector3(12.25f, -5.78f, 0), Quaternion.identity);
         spawnerInstance = Instantiate(spawner, new Vector3(12.25f, -5.78f, 0), Quaternion.identity);
-
         spawnerInstance.GetComponent<Spawner>().enabled = true;
         shipInstance.GetComponent<Ship>().enabled = true;
         spawnerInstance.SetActive(true);
         shipInstance.SetActive(true);
-        
+
     }
 
 
     public void setScore(int addScore)
     {
-        if(addScore == 0)
+        if (addScore == 0)
         {
             score = 0;
         }
@@ -164,14 +180,17 @@ public class GameManager : MonoBehaviour
 
     public void setLives(int addLives)
     {
-        if (lives + addLives >= 0)
+        if (lives + addLives >= 0 && lives + addLives < 7)
         {
             lives += addLives;
         }
-        if(addLives == 3)
+
+        //What is this?
+        if (addLives == 3)
         {
             lives = 3;
         }
+        print("You have " + lives + " Lives");
     }
     public int getLives()
     {
@@ -198,6 +217,24 @@ public class GameManager : MonoBehaviour
                 birdSpeed += 0.1f;
                 obstacleSpawnInterval += 0.5f;
 
+                break;
+        }
+    }
+
+    public void setPrize()
+    {
+        getPrize = Random.Range(1, 3);
+
+        print("Prize number " + getPrize);
+        switch (getPrize)
+        {
+            //Prize is lives
+            case 1:
+                setLives(1);
+                break;
+            //Prize is score 300
+            case 2:
+                setScore(300);
                 break;
         }
     }

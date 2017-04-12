@@ -23,7 +23,9 @@ public class Spawner : MonoBehaviour
     public GameObject[] boxes;
     GameObject[] newBox;
     public int amountOfBoxes;
-    public int boxSpawnInterval;
+    int boxSpawnInterval = 1;
+    int currentBox;
+    int boxesPresent;
 
 
     int currentBird;
@@ -122,7 +124,7 @@ public class Spawner : MonoBehaviour
                 print("Insert rock object into the Spawner");
             }
         }
-
+        //Destroy if outside baundaries
         if (rocksPresent > 0)
         {
             for (int i = 0; i < rocksPresent; i++)
@@ -145,8 +147,10 @@ public class Spawner : MonoBehaviour
     {
         if(timer > lastSpawnBox + boxSpawnInterval)
         {
-            lastSpawnBox = timer;
-            newBox[0] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.identity) as GameObject;
+            lastSpawnBox = timer + boxSpawnInterval;
+            //rotate 90 each time.
+            newBox[currentBox] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.identity) as GameObject;
+            currentBox++;
 
         }
     }
