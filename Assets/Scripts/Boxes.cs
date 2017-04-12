@@ -25,11 +25,13 @@ public class Boxes : MonoBehaviour
     {
         if (transform.parent.gameObject != null) {
 
+            //If not landed on water
             if (!parachuteDetach)
             {
                 parachute.transform.parent = transform;
                 detachTimer = Time.time;
-            }
+                transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + 0.5f, 0.01f) , transform.position.y, transform.position.z);
+            }//If landed on water
             else
             {
                 transform.position = new Vector3(transform.position.x - GameManager.levelMovingSpeed, transform.position.y, transform.position.z);
