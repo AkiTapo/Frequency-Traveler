@@ -26,7 +26,6 @@ public class Wave : MonoBehaviour
     GameObject[] waves;
     float maxWave;
     int maxWaveIndex;
-    float expWaveHeight;
 
     [SerializeField]
     [Range(4, 100)]
@@ -40,7 +39,7 @@ public class Wave : MonoBehaviour
     public int waveIntensity = 5;
     float waveY;
     private bool recording;
-    [Range (0,1)]
+    [Range(0, 1)]
     public int micSwitch;
 
     //Audio
@@ -54,6 +53,7 @@ public class Wave : MonoBehaviour
     FFTWindow fFTWindow;
     float increaseLowFreq;
     //Audio
+    public static bool waveRestart;
 
 
     private float[] samples = new float[1024];
@@ -83,7 +83,7 @@ public class Wave : MonoBehaviour
             micConnected = true;
             //Get the default microphone recording capabilities  
             Microphone.GetDeviceCaps(null, out minFreq, out maxFreq);
-            
+
 
             //According to the documentation, if minFreq and maxFreq are zero, the microphone supports any frequency...  
             if (minFreq == 0 && maxFreq == 0)
@@ -98,6 +98,15 @@ public class Wave : MonoBehaviour
         else
         {
             Debug.LogWarning("Microphone not connected!");
+        }
+    }
+    void LateUpdate()
+    {
+
+        if (GameManager.gameRestart)
+        {
+            restarWaveHeigts();
+
         }
     }
 
@@ -130,10 +139,11 @@ public class Wave : MonoBehaviour
 
 
 
-        if (GameManager.instance.isPlaying){
+        if (GameManager.instance.isPlaying)
+        {
 
             timer = Time.time;
-
+            waveRestart = false;
             audioSource.GetSpectrumData(samples, micSwitch, FFTWindow.Rectangular);
             minWaterLevelLocal = minWaterLevel;
             maxWaterLevelLocal = maxWaterLevel;
@@ -156,16 +166,12 @@ public class Wave : MonoBehaviour
                 }
             }
 
-
         }
         else
         {
             StopCoroutine(formWave());
 
         }
-
-
-
         //Get the highest from array
         //Push it and its surounding waves
         //getHighestAmplitude();
@@ -180,24 +186,25 @@ public class Wave : MonoBehaviour
 
         for (i = 1; i < waveAmount; i++)
         {
-            if (samples[i] > maxWave) {
+            if (samples[i] > maxWave)
+            {
                 maxWave = samples[i];
-                maxWaveIndex = i;     
+                maxWaveIndex = i;
             }
         }
         //print(maxWave + " maxWave" + " Index " + maxWaveIndex);
         StartCoroutine(formWave());
     }
 
-    IEnumerator formWave (){
-
+    IEnumerator formWave()
+    {
         //Do it for all wave elements in array
         for (int i = 0; i < waveAmount; i++)
         {
             //Do "blur" to smoothen wave
             smoother = 0;
             devider = 0;
-            for (int x = - waveBlur / 2; x < waveBlur /2 ; x++)
+            for (int x = -waveBlur / 2; x < waveBlur / 2; x++)
             {
                 if (i + x > 0 && i + x < waveAmount)
                 {
@@ -219,7 +226,8 @@ public class Wave : MonoBehaviour
             //waveY = (((waterLevel + samples[i] * waveIntensity * 1000) - (waterLevel + samples[i] * waveIntensity * 1000) / wavesmoother) + smoother) / devider;
 
 
-            if (waves[i].transform.localScale.y < maxWaterLevelLocal) {
+            if (waves[i].transform.localScale.y < maxWaterLevelLocal)
+            {
                 waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, Mathf.Lerp(waves[i].transform.localScale.y, smoother / devider, waveSpeed / 500 + 0.01f), waves[1].transform.localScale.z);
             }
         }
@@ -237,14 +245,15 @@ public class Wave : MonoBehaviour
         for (int i = 0; i < waveAmount; i++)
         {
 
-            if (waves[i].transform.localScale.y > minWaterLevelLocal) {
+            if (waves[i].transform.localScale.y > minWaterLevelLocal)
+            {
                 waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, waves[i].transform.localScale.y - waveSpeed / 500 + 0.01f, waves[1].transform.localScale.z);
             }
             else
             {
                 waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, minWaterLevelLocal, waves[1].transform.localScale.z);
             }
-        
+
         }
         yield return new WaitForSeconds(10);
     }
@@ -257,7 +266,16 @@ public class Wave : MonoBehaviour
 
     }
 
+    public void restarWaveHeigts()
+    {
+        print("Reseting wave");
+        for (int x = 0; x < waveAmount; x++)
+        {
 
-
+            waves[x].transform.localScale = new Vector3(waves[x].transform.localScale.x * waveWidth, minWaterLevel, waves[x].transform.localScale.z);
+        }
+        waveRestart = true;
 
     }
+}
+

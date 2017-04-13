@@ -55,10 +55,11 @@ public class Birds : MonoBehaviour {
                 print("Colided with the ship");
                 if (!GameManager.instance.gameOver)
                 {
-                    ContactPoint contact = collision.contacts[0];
-                    GameManager.instance.setScore(100);
-                    GameManager.instance.indicateEvent = true;
-                    GameManager.instance.eventCollisionPoint = contact.point;
+                    ContactPoint contact = collision.contacts[0];// Get the colision point
+                    GameManager.instance.setScore(300);
+                    GameManager.instance.indicateEvent = true; // event happened
+                    GameManager.instance.eventCollisionPoint = contact.point; // Set the colision point
+                    GameManager.instance.controlGameDifficulity(1); // increase difficulty
                 }
             }
 

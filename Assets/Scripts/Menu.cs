@@ -41,7 +41,7 @@ public class Menu : MonoBehaviour
 		Font gameFont = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font));
         Font endGameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
 
-        eventStyle.font = gameFont;
+        eventStyle.font = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font)); ;
 
         FTStyle.font = gameFont;
         FTStyle.fontSize = 50 * Screen.width / 2560;
@@ -81,7 +81,7 @@ public class Menu : MonoBehaviour
                     GameManager.instance.StartGame();
                 }
                 //Restart button
-                if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame) || Input.GetKeyDown(KeyCode.Return))
+                if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame))
                 {
                     GameManager.instance.RestartGame();
                     GameManager.instance.isPlaying = true;
@@ -121,12 +121,10 @@ public class Menu : MonoBehaviour
 
                     eventStyle.fontSize = tempEventFontSize++;
                     //eventStyle.font.material.color = new Vector4 (eventStyle.font.material.color.r, eventStyle.font.material.color.g, eventStyle.font.material.color.b, eventFontTransparency- 0.01f); 
-                    eventFontTransparency -= 0.01f;
-                    eventStyle.normal.textColor = new Vector4((255 - 16) / 255, (255 - 51) / 255, (255 - 16) / 255, eventFontTransparency);
+                    eventFontTransparency -= 0.008f;
+                    eventStyle.normal.textColor = new Color(1, 0.8f, 0, eventFontTransparency);
 
-                    GUI.Label(new Rect(eventCollisionPoint.x, Screen.height - eventCollisionPoint.y, Screen.width, Screen.height), "Boom!", eventStyle);
-
-
+                    GUI.Label(new Rect(eventCollisionPoint.x, Screen.height - eventCollisionPoint.y, Screen.width, Screen.height), GameManager.eventDescription, eventStyle);
                 }
                 else
                 {

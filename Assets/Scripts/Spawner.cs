@@ -23,7 +23,6 @@ public class Spawner : MonoBehaviour
     public GameObject[] boxes;
     GameObject[] newBox;
     public int amountOfBoxes;
-    int boxSpawnInterval = 1;
     int currentBox;
     int boxesPresent;
 
@@ -145,11 +144,11 @@ public class Spawner : MonoBehaviour
     //Control parachute boxes
     void manageBoxes()
     {
-        if(timer > lastSpawnBox + boxSpawnInterval)
+        if(timer > lastSpawnBox + GameManager.instance.boxSpawnInterval)
         {
-            lastSpawnBox = timer + boxSpawnInterval;
+            lastSpawnBox = timer + GameManager.instance.boxSpawnInterval;
             //rotate 90 each time.
-            newBox[currentBox] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.identity) as GameObject;
+            newBox[currentBox] = Instantiate(boxes[0], new Vector3(Random.Range(-7, 7), 7, 0.6f), Quaternion.Euler(0, Random.Range(0, 360), 0)) as GameObject;
             currentBox++;
 
         }

@@ -12,10 +12,15 @@ public class Ship : MonoBehaviour
     Collision collision;
     private float shipDrownTime, timer;
     public int lives;
+    GameObject shipModel;
+    int crashIntensity;
+    bool crashedRock;
+
 
     void Awake()
     {
         lives = GameManager.instance.getLives();
+
     }
 
     void Update()
@@ -26,10 +31,12 @@ public class Ship : MonoBehaviour
         {
             respawnShip();
         }
+        shipModel = GameObject.Find("Ship");
     }
 
     void LateUpdate()
     {
+
         drown = drowning;
         //To move the ship down the wave
         if (!drowning && collision != null && collision.gameObject.tag == "Wave")
@@ -56,10 +63,11 @@ public class Ship : MonoBehaviour
         {
             if (collision != null && collision.gameObject.tag == "Rock" && !drowning)
             {
+                crashedRock = true;
                 //Remove 50 points if not game over
                 if (!GameManager.instance.gameOver)
                 {
-                    GameManager.instance.setScore(-50);
+                    GameManager.instance.setScore(-50); //Won't indicate becasue string is emediately overwriten by -lives
                     ContactPoint contact = collision.contacts[0];
                     GameManager.instance.indicateEvent = true;
                     GameManager.instance.eventCollisionPoint = contact.point;
@@ -77,10 +85,16 @@ public class Ship : MonoBehaviour
             GetComponent<Rigidbody>().drag = drag;
         }
 
+        if (crashedRock && shipModel.GetComponent<SkinnedMeshRenderer>() != null)
+        {
+            shipModel.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, crashIntensity += 2);
+        }
+
         //Respawn ship
         if (transform.position.y < -7 || transform.position.x < -11 || transform.position.x > 10 || Input.GetKey(KeyCode.R))
         {
             respawnShip();
+
         }
         else
         {
@@ -97,6 +111,8 @@ public class Ship : MonoBehaviour
         shipReset = true;
         collision = null;
         //drown = false;
+        shipModel.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0);
+        crashedRock = false;
     }
 
     void OnCollisionEnter(Collision collision)

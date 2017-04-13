@@ -35,6 +35,8 @@ ModelImporter:
     400024: Root
     400026: Tail
     400028: Toes
+    2300000: Bird
+    3300000: Bird
     4300000: Bird
     7400000: Fly
     7400002: Die

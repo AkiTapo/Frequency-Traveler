@@ -27,29 +27,40 @@ public class Boxes : MonoBehaviour
 
         if (transform.parent.gameObject != null) {
 
-            //If not landed on water
-            if (!parachuteDetach)
+            //If game is not paused
+            if (GameManager.instance.isPlaying)
             {
-
-                detachTimer = Time.time;
-                transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x - 0.5f, 0.01f) , transform.position.y, transform.position.z);
-            }//If landed on water
-            if(parachuteDetach)
-            {
-                parachute.transform.parent = null;
-                transform.position = new Vector3(transform.position.x - GameManager.levelMovingSpeed, transform.position.y, transform.position.z);
-                parachute.GetComponent<Rigidbody>().useGravity = true;
-                parachute.GetComponent<Rigidbody>().isKinematic = false;
-
-                //Colapse parashute
-                if (parachute.transform.localScale.y > 0.2f) {
-                    parachute.transform.localScale = new Vector3(parachute.transform.localScale.x, Mathf.Lerp(parachute.transform.localScale.y, parachute.transform.localScale.y - 0.1f, 0.1f), parachute.transform.localScale.z);
-                }
-                // to make it drown after 4 seconds
-                if (timer > detachTimer + 4)
+                //If not landed on water
+                if (!parachuteDetach)
                 {
-                    GetComponent<Rigidbody>().drag = 20;
+                    GetComponent<Rigidbody>().useGravity = true;
+                    detachTimer = Time.time;
+                    transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x - 0.5f, 0.01f), transform.position.y, transform.position.z);
                 }
+                //If landed on water
+                if (parachuteDetach)
+                {
+                    parachute.transform.parent = null;
+                    transform.position = new Vector3(transform.position.x - GameManager.levelMovingSpeed, transform.position.y, transform.position.z);
+                    parachute.GetComponent<Rigidbody>().useGravity = true;
+                    parachute.GetComponent<Rigidbody>().isKinematic = false;
+
+                    //Colapse parashute
+                    if (parachute.transform.localScale.y > 0.2f)
+                    {
+                        parachute.transform.localScale = new Vector3(parachute.transform.localScale.x, Mathf.Lerp(parachute.transform.localScale.y, parachute.transform.localScale.y - 0.1f, 0.1f), parachute.transform.localScale.z);
+                    }
+                    // to make it drown after 4 seconds
+                    if (timer > detachTimer + 4)
+                    {
+                        GetComponent<Rigidbody>().drag = 20;
+                    }
+                }
+            }
+            //if game is paused
+            else
+            {
+                GetComponent<Rigidbody>().useGravity = false;
             }
         }
         if (transform.localPosition.y < -13)

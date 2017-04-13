@@ -29,8 +29,9 @@ public class GameManager : MonoBehaviour
     public bool indicateEvent;
     public Vector3 eventCollisionPoint;
     float timer, eventCollisionTime;
+    public static string eventDescription;
+    public static bool gameRestart;
 
-    //bool isPlaying;
 
 
 
@@ -60,7 +61,7 @@ public class GameManager : MonoBehaviour
     {
         timer = Time.time;
 
-        if (indicateEvent && eventCollisionTime + 2 < timer)
+        if (indicateEvent && eventCollisionTime + 1 < timer)
         {
             indicateEvent = false;
         }
@@ -68,6 +69,12 @@ public class GameManager : MonoBehaviour
         {
             eventCollisionTime = timer;
         }
+        if (gameRestart && Wave.waveRestart)
+        {
+            gameRestart = false;
+        }
+
+
     }
 
     void LateUpdate()
@@ -103,6 +110,7 @@ public class GameManager : MonoBehaviour
 
         if (!isPlaying)
         {
+
             isPlaying = true;
             print("Game Started");
             waveInstance.SetActive(true);
@@ -122,6 +130,7 @@ public class GameManager : MonoBehaviour
     }
     public void RestartGame()
     {
+        gameRestart = true;
         destroyObjects();
         InstantiateObjects();
         gameOver = false;
@@ -143,8 +152,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(bird);
         }
+        GameObject[] boxesDestroy = GameObject.FindGameObjectsWithTag("Box");
+        foreach (GameObject box in boxesDestroy)
+        {
+            Destroy(box.transform.parent.gameObject);
+        }
+
         Destroy(shipInstance);
         Destroy(spawnerInstance);
+        
     }
 
 
@@ -159,9 +175,18 @@ public class GameManager : MonoBehaviour
 
     }
 
-
+    //Set score
     public void setScore(int addScore)
     {
+        if (addScore > 0)
+        {
+            eventDescription = "Score +" + addScore.ToString();
+        }
+        else
+        {
+            eventDescription = "Lives " + addScore.ToString();
+        }
+
         if (addScore == 0)
         {
             score = 0;
@@ -178,14 +203,27 @@ public class GameManager : MonoBehaviour
         return score;
     }
 
+    //Set lives
     public void setLives(int addLives)
     {
+        if (addLives > 0)
+        {
+            eventDescription = "Lives +" + addLives.ToString();
+        }
+        else
+        {
+            eventDescription = "Lives " + addLives.ToString();
+        }
+
         if (lives + addLives >= 0 && lives + addLives < 7)
         {
             lives += addLives;
         }
-
-        //What is this?
+        if (lives + addLives == 6)
+        {
+            eventDescription = "Lives are full!";
+        }
+        //Set lives to initial 3 when game is restarted
         if (addLives == 3)
         {
             lives = 3;
@@ -198,8 +236,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void controlGameDificulity(int difficulty)
+    public void controlGameDifficulity(int difficulty)
     {
+        print("Controlling game difficulity");
         switch (difficulty)
         {
             //Increase difficulty
@@ -221,11 +260,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //When box is hit player gets random prize
     public void setPrize()
     {
-        getPrize = Random.Range(1, 3);
+        getPrize = Random.Range(1, 6);
 
-        print("Prize number " + getPrize);
+        print("Prize number + " + getPrize);
         switch (getPrize)
         {
             //Prize is lives
@@ -234,7 +274,16 @@ public class GameManager : MonoBehaviour
                 break;
             //Prize is score 300
             case 2:
-                setScore(300);
+                setScore(50);
+                break;
+            case 3:
+                setScore(100);
+                break;
+            case 4:
+                setScore(150);
+                break;
+            case 5:
+                setScore(200);
                 break;
         }
     }
