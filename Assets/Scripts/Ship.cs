@@ -39,7 +39,7 @@ public class Ship : MonoBehaviour
 
         drown = drowning;
         //To move the ship down the wave
-        if (!drowning && collision != null && collision.gameObject.tag == "Wave")
+        if (!drowning && collision != null && collision.collider !=null && collision.gameObject.tag == "Wave")
         {
 
             //To controll ship with buttons, this overrides ship naturaly sliding down the wave
@@ -59,7 +59,7 @@ public class Ship : MonoBehaviour
         }
 
         //Drown when flip or when collided with rock
-        if (!drowning && (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 || collision != null && collision.gameObject.tag == "Rock"))
+        if (!drowning && (transform.localEulerAngles.z < 295 && transform.localEulerAngles.z > 45 || collision != null && collision.collider && collision.gameObject.tag == "Rock"))
         {
             if (collision != null && collision.gameObject.tag == "Rock" && !drowning)
             {
@@ -111,7 +111,10 @@ public class Ship : MonoBehaviour
         shipReset = true;
         collision = null;
         //drown = false;
-        shipModel.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0);
+        if (shipModel != null)
+        {
+            shipModel.GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 0);
+        }
         crashedRock = false;
     }
 

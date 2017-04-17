@@ -71,7 +71,7 @@ public class Spawner : MonoBehaviour
             if (birds[0] != null)
             {
                 lastSpawnedBird = timer + birdSpawnInterval;
-                newBird[currentBird] = Instantiate(birds[0], new Vector3(transform.position.x, Random.Range(Wave.minWaterLevelLocal - 7, Wave.maxWaterLevelLocal - 11.4f), 0), Quaternion.LookRotation(Vector3.back)) as GameObject;
+                newBird[currentBird] = Instantiate(birds[Random.Range(0, 2)], new Vector3(transform.position.x, Random.Range(Wave.minWaterLevelLocal - 7, Wave.maxWaterLevelLocal - 11.4f), 0), Quaternion.LookRotation(Vector3.back)) as GameObject;
                 newBird[currentBird].GetComponent<Animation>().Play();
                 newBird[currentBird].GetComponent<Birds>().alive = true;
                 birdFly = newBird[currentBird].GetComponent<Animation>();

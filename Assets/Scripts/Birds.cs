@@ -56,6 +56,16 @@ public class Birds : MonoBehaviour {
                 if (!GameManager.instance.gameOver)
                 {
                     ContactPoint contact = collision.contacts[0];// Get the colision point
+
+                    //Bad way to detect which bird it is, but it works
+                    if (GetComponent<BoxCollider>().center.y == 0.35f)
+                    {
+                        GameManager.instance.setScore(450);
+                    }
+                    else
+                    {
+                        GameManager.instance.setScore(300);
+                    }
                     GameManager.instance.setScore(300);
                     GameManager.instance.indicateEvent = true; // event happened
                     GameManager.instance.eventCollisionPoint = contact.point; // Set the colision point
