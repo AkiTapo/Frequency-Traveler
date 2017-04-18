@@ -147,7 +147,7 @@ public class Wave : MonoBehaviour
             audioSource.GetSpectrumData(samples, micSwitch, FFTWindow.Rectangular);
             minWaterLevelLocal = minWaterLevel;
             maxWaterLevelLocal = maxWaterLevel;
-            StartCoroutine(formWave());
+            formWave();
 
 
 
@@ -169,17 +169,13 @@ public class Wave : MonoBehaviour
         }
         else
         {
-            StopCoroutine(formWave());
+            //StopCoroutine(formWave());
 
         }
-        //Get the highest from array
-        //Push it and its surounding waves
-        //getHighestAmplitude();
 
     }
 
-    //Get maimum amplitude from all frequencies samples[]
-    //Not used Now
+
     void getHighestAmplitude()
     {
         int i;
@@ -193,10 +189,10 @@ public class Wave : MonoBehaviour
             }
         }
         //print(maxWave + " maxWave" + " Index " + maxWaveIndex);
-        StartCoroutine(formWave());
+       formWave();
     }
 
-    IEnumerator formWave()
+    void formWave()
     {
         //Do it for all wave elements in array
         for (int i = 0; i < waveAmount; i++)
@@ -232,14 +228,14 @@ public class Wave : MonoBehaviour
             }
         }
 
-        StartCoroutine(resetWave());
+        resetWave();
 
 
-        yield return new WaitForSeconds(10);
+        //yield return new WaitForSeconds(10);
     }
 
     //To slowly calm wave down to original position
-    IEnumerator resetWave()
+    void resetWave()
     {
 
         for (int i = 0; i < waveAmount; i++)
@@ -255,7 +251,7 @@ public class Wave : MonoBehaviour
             }
 
         }
-        yield return new WaitForSeconds(10);
+        //yield return new WaitForSeconds(10);
     }
 
     //Get input from brain
