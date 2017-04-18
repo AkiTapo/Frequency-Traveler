@@ -37,8 +37,13 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null;
 
-    void Start()
-    {
+    IEnumerator Start() { 
+        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam | UserAuthorization.Microphone);
+        if (Application.HasUserAuthorization(UserAuthorization.WebCam | UserAuthorization.Microphone))
+        {
+            print("Access for web to use microphone");
+        }
+    
         spawnerInstance = null;
         waveInstance = wave;
         shipInstance = ship;
@@ -97,6 +102,7 @@ public class GameManager : MonoBehaviour
         {
             gameOver = true;
         }
+
     }
 
     public void StartGame()

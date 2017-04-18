@@ -40,7 +40,7 @@ public class Wave : MonoBehaviour
     float waveY;
     private bool recording;
     [Range(0, 1)]
-    public int micSwitch;
+    public int micSwitch = 0;
 
     //Audio
     private AudioSource audioSource;
@@ -108,6 +108,11 @@ public class Wave : MonoBehaviour
             restarWaveHeigts();
 
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            setMic();
+        }
     }
 
 
@@ -138,7 +143,6 @@ public class Wave : MonoBehaviour
         }
 
 
-
         if (GameManager.instance.isPlaying)
         {
 
@@ -147,7 +151,7 @@ public class Wave : MonoBehaviour
             audioSource.GetSpectrumData(samples, micSwitch, FFTWindow.Rectangular);
             minWaterLevelLocal = minWaterLevel;
             maxWaterLevelLocal = maxWaterLevel;
-            formWave();
+            StartCoroutine(formWave());
 
 
 
@@ -169,7 +173,7 @@ public class Wave : MonoBehaviour
         }
         else
         {
-            //StopCoroutine(formWave());
+            StopCoroutine(formWave());
 
         }
 
@@ -192,7 +196,7 @@ public class Wave : MonoBehaviour
        formWave();
     }
 
-    void formWave()
+    IEnumerator formWave()
     {
         //Do it for all wave elements in array
         for (int i = 0; i < waveAmount; i++)
@@ -213,14 +217,10 @@ public class Wave : MonoBehaviour
                     else
                     {
                         smoother += (minWaterLevelLocal + samples[i] * waveIntensity * 5000);
-                        //waveY = (((waterLevel + samples[i] * waveIntensity * 1000) - (waterLevel + samples[i] * waveIntensity * 1000) / (waves[1].transform.localScale.x);
+
                     }
                 }
-                //waves[i].GetComponent<Renderer>().material.color = new Vector4(256 / (256 - 88), 256 / (256 - 121), 256 / waves[i].transform.localScale.y * 10);
             }
-            //ORIGINAL WORKS
-            //waveY = (((waterLevel + samples[i] * waveIntensity * 1000) - (waterLevel + samples[i] * waveIntensity * 1000) / wavesmoother) + smoother) / devider;
-
 
             if (waves[i].transform.localScale.y < maxWaterLevelLocal)
             {
@@ -228,14 +228,14 @@ public class Wave : MonoBehaviour
             }
         }
 
-        resetWave();
+        StartCoroutine(resetWave());
 
 
-        //yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
     }
 
     //To slowly calm wave down to original position
-    void resetWave()
+    IEnumerator resetWave()
     {
 
         for (int i = 0; i < waveAmount; i++)
@@ -251,7 +251,7 @@ public class Wave : MonoBehaviour
             }
 
         }
-        //yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
     }
 
     //Get input from brain
@@ -272,6 +272,19 @@ public class Wave : MonoBehaviour
         }
         waveRestart = true;
 
+    }
+    public void setMic()
+    {
+        if(inputSwitch == 1)
+        {
+            inputSwitch = 0;
+            print("Microphone " + inputSwitch);
+        }
+        else { 
+        
+            inputSwitch = 1;
+            print("Microphone " + inputSwitch);
+        }
     }
 }
 
