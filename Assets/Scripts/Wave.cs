@@ -30,13 +30,14 @@ public class Wave : MonoBehaviour
     [SerializeField]
     [Range(4, 100)]
     public int waveBlur = 15;
+    public static int _waveBlur;
     [SerializeField]
     [Range(0, 30)]
     public float waveSpeed = 5f;
+    public static float _waveSpeed;
     [Range(0.1f, 10f)]
-    // public float wavesmoother = 5;
-    // [Range(0f, 10f)]
     public int waveIntensity = 5;
+    public static int _waveIntensity;
     float waveY;
     private bool recording;
     [Range(0, 1)]
@@ -63,6 +64,10 @@ public class Wave : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        _waveSpeed = waveSpeed;
+        _waveBlur = waveBlur;
+        _waveIntensity = waveIntensity;
+
         waves = new GameObject[waveAmount];
 
         for (int x = 0; x < waveAmount; x++)
@@ -104,6 +109,9 @@ public class Wave : MonoBehaviour
     }
     void LateUpdate()
     {
+        waveSpeed = _waveSpeed;
+        waveBlur = _waveBlur;
+        waveIntensity = _waveIntensity;
 
         if (GameManager.gameRestart)
         {
@@ -197,7 +205,7 @@ public class Wave : MonoBehaviour
             }
         }
         //print(maxWave + " maxWave" + " Index " + maxWaveIndex);
-       formWave();
+        formWave();
     }
 
     IEnumerator formWave()
@@ -279,13 +287,14 @@ public class Wave : MonoBehaviour
     }
     public void setMic()
     {
-        if(inputSwitch == 1)
+        if (inputSwitch == 1)
         {
             inputSwitch = 0;
             print("Microphone " + inputSwitch);
         }
-        else { 
-        
+        else
+        {
+
             inputSwitch = 1;
             print("Microphone " + inputSwitch);
         }

@@ -6,7 +6,8 @@ public class Menu : MonoBehaviour
 {
 
 
-    public Texture2D startGameIcon, resumeGame, restartGame, menuLogo;
+    public Texture2D startGameIcon, resumeGame, restartGame, optionsButton;
+    public Texture2D menuLogo;
     public Texture2D livesIconFull, livesIconEmpty;
     private Texture2D[] liveIcons;
     float opacity = 0;
@@ -17,7 +18,11 @@ public class Menu : MonoBehaviour
     Camera camera;
     int initialEventFontSize, tempEventFontSize;
     float eventFontTransparency = 1;
+    bool inOptions;
 
+    float waveBlurSlider;
+    float waveSpeedSlider;
+    float waveIntensitySLider;
 
     void Start()
     {
@@ -27,7 +32,11 @@ public class Menu : MonoBehaviour
         overScreen.GetComponent<Renderer>().material.color = new Vector4(0.5f, 0, 0, 0);
         camera = FindObjectOfType<Camera>();
         initialEventFontSize = 25 * Screen.width / 1920;
-        tempEventFontSize = initialEventFontSize /10;
+        tempEventFontSize = initialEventFontSize / 10;
+
+        waveBlurSlider = Wave._waveBlur;
+        waveSpeedSlider = Wave._waveSpeed;
+        waveIntensitySLider = Wave._waveIntensity;
     }
 
     void OnGUI()
@@ -38,7 +47,7 @@ public class Menu : MonoBehaviour
         GUIStyle FTStyle = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText1 = new GUIStyle(GUI.skin.label);
         GUIStyle gameOverText2 = new GUIStyle(GUI.skin.label);
-		Font gameFont = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font));
+        Font gameFont = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font));
         Font endGameFont = (Font)Resources.Load("Fonts/HelveticaNeueLTCom-XBlkCn", typeof(Font));
 
         eventStyle.font = (Font)Resources.Load("Fonts/OstrichRegular", typeof(Font)); ;
@@ -56,48 +65,81 @@ public class Menu : MonoBehaviour
         gameOverText1.fontSize = 60 * Screen.width / 1920;
         gameOverText2.fontSize = 80 * Screen.width / 1920;
 
+        // has to be above Color.clear
+        if (inOptions)
+        {
+            //Wave blur
+            GUI.Label(new Rect(Screen.width / 2 - Screen.width / 5 / 2, Screen.height / 2, Screen.width / 4, Screen.height/10), "Wave Blur", FTStyle);
+            waveBlurSlider = GUI.HorizontalSlider(new Rect(Screen.width / 2 - Screen.width / 5 / 2, Screen.height / 2, Screen.width / 5, 5), waveBlurSlider, 0, 100);
+
+
+
+            //Set stats for wave
+            Wave._waveBlur = (int)waveBlurSlider;
+            Wave._waveSpeed = waveSpeedSlider;
+            Wave._waveIntensity = (int)waveIntensitySLider;
+        }
 
         GUI.backgroundColor = Color.clear;
 
-        //Main Menu
+
+
+
+
+        //Main Menu if not playing
         if (GameManager.instance.isPlaying == false)
         {
-            GUI.DrawTexture(new Rect(Screen.width / 2 - menuLogo.width / 2, menuLogo.height / 4, menuLogo.width, menuLogo.height), menuLogo);
+            GUI.DrawTexture(new Rect(Screen.width / 2 - (Screen.width - Screen.width / 8) / 2, menuLogo.height / 4, Screen.width - Screen.width / 8, Screen.height/ 3), menuLogo);
 
+            //if game never started
             if (!GameManager.instance.gameStartedOnce)
             {
+                
                 if (GUI.Button(new Rect(Screen.width / 2 - startGameIcon.width / 4, Screen.height / 2 + startGameIcon.height * 0.2f, startGameIcon.width / 2, startGameIcon.height / 2), startGameIcon) || Input.GetKeyDown(KeyCode.Return))
                 {
                     GameManager.instance.StartGame();
                 }
-                //menuLogo
-
             }
+            // if game started once
             else
             {
-                // Resume button
-                if (GUI.Button(new Rect(Screen.width / 2 - resumeGame.width / 4, Screen.height / 2 - restartGame.height / 2, resumeGame.width / 2, resumeGame.height / 2), resumeGame) || Input.GetKeyDown(KeyCode.Return))
+                //if not in options window
+                if (!inOptions)
                 {
-                    GameManager.instance.StartGame();
+                    // Resume button
+                    if (GUI.Button(new Rect(Screen.width / 2 - resumeGame.width / 4, Screen.height / 2 - restartGame.height / 2, resumeGame.width / 2, resumeGame.height / 2), resumeGame) || Input.GetKeyDown(KeyCode.Return))
+                    {
+                        GameManager.instance.StartGame(); ;
+                    }
+                    //Restart button
+                    if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame))
+                    {
+                        GameManager.instance.RestartGame();
+                        GameManager.instance.isPlaying = true;
+                    }
+                    // Options button and its functions
+                    if (GUI.Button(new Rect(Screen.width / 2 - optionsButton.width / 4, Screen.height / 2 + optionsButton.height / 2, optionsButton.width / 2, optionsButton.height / 2), optionsButton))
+                    {
+                        inOptions = true;
+                    }
                 }
-                //Restart button
-                if (GUI.Button(new Rect(Screen.width / 2 - restartGame.width / 4, Screen.height / 2, restartGame.width / 2, restartGame.height / 2), restartGame))
+
+                //disable options screen on ESC
+                if (Input.GetKey(KeyCode.Escape))
                 {
-                    GameManager.instance.RestartGame();
-                    GameManager.instance.isPlaying = true;
+                    inOptions = false;
                 }
 
             }
-
             fadeInScreen(1);
         }
 
         //In Game
         if (GameManager.instance.isPlaying == true)
         {
-            if (!GameManager.instance.gameOver )
+            if (!GameManager.instance.gameOver)
             {
-                GUI.Label(new Rect(Screen.width / 25, Screen.height / 50,300, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
+                GUI.Label(new Rect(Screen.width / 25, Screen.height / 50, 300, 50), "SCORE: " + GameManager.instance.getScore().ToString(), FTStyle);
 
                 if (GameManager.instance.getLives() > maxLives)
                 {
@@ -156,6 +198,7 @@ public class Menu : MonoBehaviour
 
 
         }
+
     }
     //Fade In screen, used when game starts or ends
     void fadeInScreen(int fadeIn)
