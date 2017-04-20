@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     float timer, eventCollisionTime;
     public static string eventDescription;
     public static bool gameRestart;
+    int scoreMultiplier = 1;
 
 
 
@@ -92,16 +93,25 @@ public class GameManager : MonoBehaviour
         Spawner.rockSpawnInterwal = obstacleSpawnInterval;
         Spawner.birdSpawnInterval = birdSpawnInterval;
 
+        if (lives == 0)
+        {
+            gameOver = true;
+        }
+
+
         //Controlls
         if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
         {
             PauseGame();
         }
-
-        if (lives == 0)
-        {
-            gameOver = true;
+        if (Input.GetKeyDown(KeyCode.RightArrow)){
+            controlGameDifficulity(1);
         }
+        if (Input.GetKeyDown(KeyCode.LeftArrow)){
+            controlGameDifficulity(2);
+        }
+
+
 
     }
 
@@ -184,6 +194,15 @@ public class GameManager : MonoBehaviour
     //Set score
     public void setScore(int addScore)
     {
+        if (addScore == 0)
+        {
+            score = 0;
+        }
+        if (score + addScore >= 0)
+        {
+            score += addScore;
+            print("addScore + (addScore * scoreMultiplier) / 10" + addScore + (addScore * scoreMultiplier) / 10);
+        }
         if (addScore > 0)
         {
             eventDescription = "Score +" + addScore.ToString();
@@ -193,14 +212,7 @@ public class GameManager : MonoBehaviour
             eventDescription = "Lives " + addScore.ToString();
         }
 
-        if (addScore == 0)
-        {
-            score = 0;
-        }
-        if (score + addScore >= 0)
-        {
-            score += addScore;
-        }
+
 
     }
 
@@ -244,19 +256,23 @@ public class GameManager : MonoBehaviour
 
     public void controlGameDifficulity(int difficulty)
     {
-        print("Controlling game difficulity");
+
         switch (difficulty)
         {
+
             //Increase difficulty
             case 1:
+                print("Game dificulity increased");
                 levelSpeed += 0.1f;
                 obstacleSpawnInterval -= 1;
                 birdSpeed += 0.1f;
                 obstacleSpawnInterval -= 0.5f;
+                scoreMultiplier += 1;
 
                 break;
             //decrease difficulty
             case 2:
+                print("Game dificulity decreased");
                 levelSpeed -= 0.1f;
                 obstacleSpawnInterval += 1;
                 birdSpeed += 0.1f;

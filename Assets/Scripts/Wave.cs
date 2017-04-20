@@ -78,6 +78,8 @@ public class Wave : MonoBehaviour
 
     void Awake()
     {
+
+        print("ön awake");
         if (Microphone.devices.Length >= 0)
         {
             micConnected = true;
@@ -112,6 +114,9 @@ public class Wave : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             setMic();
+            resetWave();
+            StopCoroutine(formWave());
+            StartCoroutine(formWave());
         }
     }
 
@@ -152,7 +157,6 @@ public class Wave : MonoBehaviour
             minWaterLevelLocal = minWaterLevel;
             maxWaterLevelLocal = maxWaterLevel;
             StartCoroutine(formWave());
-
 
 
             if (Ship.drowning)
