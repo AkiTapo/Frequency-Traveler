@@ -12,7 +12,7 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
@@ -73,6 +73,9 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="ArdunityCore">
+      <HintPath>Assets\ARDUnity\Scripts\Internal\ArdunityCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Frequency-Traveler.CSharp.Plugins.csproj">
@@ -81,17 +84,66 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ARDUnity\Examples\Custom Controller\MyController.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\ColorInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\ColorOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\CurveOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\DragInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\ImpulseInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\InputFilter.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\MappingInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\OutputCombine.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\RTTTLSong.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\ToggleInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\ToneOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\TriggerInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Bridge\ValueOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\CommSocket\CommBLE.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\CommSocket\CommSerial.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\AnalogInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\AnalogOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\DigitalInput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\DigitalOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\GenericServo.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\GenericTone.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Controller\PulseOutput.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Internal\ControllerDataType.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\AudioSourceReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\ButtonReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\ColliderReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\DialSliderReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\DropdownReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\ExplosionReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\ForceReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\LightColorReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\LightIntensityReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\MoveAxisReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\Rotation2DReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\RotationAxisReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\SliderReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\TextReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\ToggleReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Reactor\TorqueReactor.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\ArdunityAppUI.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\CommBleUI.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\CommSerialUI.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\CommSocketUI.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\DialSlider.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\ListItem.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\ListView.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\SliderSnap.cs" />
+    <Compile Include="Assets\ARDUnity\Scripts\Utility\ToggleEvent.cs" />
     <Compile Include="Assets\FarlandSkies\Demo\Scripts\Player\FPSWalkerEnhanced.cs" />
     <Compile Include="Assets\FarlandSkies\Demo\Scripts\Player\SmoothMouseLook.cs" />
     <Compile Include="Assets\FarlandSkies\Demo\Scripts\Skybox\SkyboxChanger.cs" />
     <Compile Include="Assets\FarlandSkies\Demo\Scripts\Skybox\SkyboxRotator.cs" />
-    <Compile Include="Assets\Scripts\AudioSourceGetSpectrumDataExample.cs" />
+    <Compile Include="Assets\Scripts\ArduinoConnector.cs" />
     <Compile Include="Assets\Scripts\Birds.cs" />
     <Compile Include="Assets\Scripts\Boxes.cs" />
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
-    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
+    <Compile Include="Assets\Scripts\Move.cs" />
     <Compile Include="Assets\Scripts\Rock.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />
     <Compile Include="Assets\Scripts\Spawner.cs" />
@@ -99,6 +151,8 @@
     <Compile Include="Assets\Scripts\Wave.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\ARDUnity\Examples\Buzzer\SampleSongs.txt" />
+    <None Include="Assets\ARDUnity\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency-Traveler.CSharp",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency-Traveler.CSharp.Editor.Plugins", "Frequency-Traveler.CSharp.Editor.Plugins.csproj", "{8B73327F-F734-9C4A-BFDD-BE4331C4FDF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency-Traveler.CSharp.Editor", "Frequency-Traveler.CSharp.Editor.csproj", "{997D02AC-5D45-F68F-D57B-5AA07FCF42BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{8B73327F-F734-9C4A-BFDD-BE4331C4FDF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B73327F-F734-9C4A-BFDD-BE4331C4FDF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B73327F-F734-9C4A-BFDD-BE4331C4FDF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{997D02AC-5D45-F68F-D57B-5AA07FCF42BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{997D02AC-5D45-F68F-D57B-5AA07FCF42BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{997D02AC-5D45-F68F-D57B-5AA07FCF42BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{997D02AC-5D45-F68F-D57B-5AA07FCF42BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

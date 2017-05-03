@@ -75,9 +75,9 @@ public class Menu : MonoBehaviour
 
 
             //Set stats for wave
-            Wave._waveBlur = (int)waveBlurSlider;
-            Wave._waveSpeed = waveSpeedSlider;
-            Wave._waveIntensity = (int)waveIntensitySLider;
+           // Wave._waveBlur = (int)waveBlurSlider;
+            //Wave._waveSpeed = waveSpeedSlider;
+            //Wave._waveIntensity = (int)waveIntensitySLider;
         }
 
         GUI.backgroundColor = Color.clear;

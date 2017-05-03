@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         yield return Application.RequestUserAuthorization(UserAuthorization.WebCam | UserAuthorization.Microphone);
         if (Application.HasUserAuthorization(UserAuthorization.WebCam | UserAuthorization.Microphone))
         {
-            print("Access for web to use microphone");
+            //print("Access for web to use microphone");
         }
     
         spawnerInstance = null;

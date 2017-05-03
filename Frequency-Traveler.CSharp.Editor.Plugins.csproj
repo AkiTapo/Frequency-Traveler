@@ -115,6 +115,12 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="ArdunityCoreEditor">
+      <HintPath>Assets\ARDUnity\Scripts\Internal\Editor\ArdunityCoreEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="ArdunityCore">
+      <HintPath>Assets\ARDUnity\Scripts\Internal\ArdunityCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Frequency-Traveler.CSharp.Plugins.csproj">
@@ -143,6 +149,8 @@
     <Compile Include="Assets\Standard Assets\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\ARDUnity\Examples\Buzzer\SampleSongs.txt" />
+    <None Include="Assets\ARDUnity\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
