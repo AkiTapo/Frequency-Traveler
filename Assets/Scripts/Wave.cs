@@ -75,8 +75,10 @@ public class Wave : MonoBehaviour
     int arduinoStringToInt;
     bool micParametersSet, lightParametersSet;
     float intensityMulti = 1;
-    int[] lightSensorCenters = new int[] { 15, 38, 67, 92 };
+    int[] lightSensorCenters = new int[4];// = new int[] { 15, 38, 67, 92 };
+    int[] wavesInBetweenSensors = new int[4];
     private int samplesAway;
+    private int counterSensor = 0;
 
     // Use this for initialization
     void Start()
@@ -92,6 +94,18 @@ public class Wave : MonoBehaviour
         catch
         {
             print("Arduino is not connected or port is not availible");
+        }
+
+        //calculate light sensor centers and in between them
+        for (int c = 0; c < lightSensorCenters.Length; c++)
+        {
+            lightSensorCenters[counterSensor] = waveAmount / 4 * counterSensor + waveAmount / 4 / 2;
+            counterSensor += 1;
+        }
+        //Calculate indexes of in between sensors
+        for (int c = 0; c < lightSensorCenters.Length - 1; c++)
+        {
+            wavesInBetweenSensors[c] = (lightSensorCenters[c + 1] - lightSensorCenters[c]) / 2 + lightSensorCenters[c];
         }
 
 
@@ -159,7 +173,6 @@ public class Wave : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
         // Call once when game is pused
         if (GameManager.instance.isPlaying == false)
         {
@@ -175,10 +188,7 @@ public class Wave : MonoBehaviour
             {
                 //put all bellow to if
                 recording = true;
-
             }
-
-
 
         }
         if (!startedRecording && inputSwitch == 1)
@@ -197,9 +207,6 @@ public class Wave : MonoBehaviour
             startedRecording = false;
             audioSource.Stop();
             audioSource.clip = null;
-            //audioSource = null;
-            //audioSource.enabled = false;
-            //GetComponent<AudioListener>().enabled = false;
         }
 
 
@@ -238,7 +245,6 @@ public class Wave : MonoBehaviour
             StopCoroutine(formAWave());
 
         }
-
     }
 
 
@@ -270,7 +276,7 @@ public class Wave : MonoBehaviour
                     //print(arduinoStringToInt);
                     if (arduinoStringToInt < 1999)
                     {
-                        lightSensor[0] = arduinoStringToInt - 1700;
+                        lightSensor[0] = arduinoStringToInt - 1710;
                         //samples[samples.Length / lightSensor.Length / 2] = lightSensor[0];
                         //samples[128] = lightSensor[0];
                     }
@@ -282,7 +288,7 @@ public class Wave : MonoBehaviour
                     }
                     if (arduinoStringToInt > 2999 && arduinoStringToInt < 3999)
                     {
-                        lightSensor[2] = arduinoStringToInt - 3700;
+                        lightSensor[2] = arduinoStringToInt - 3650;
                         //samples[samples.Length / 2 + samples.Length / lightSensor.Length / 2] = lightSensor[2];
                         //samples[640] = lightSensor[2];
                     }
@@ -291,7 +297,6 @@ public class Wave : MonoBehaviour
                         lightSensor[3] = arduinoStringToInt - 4700;
                         //samples[samples.Length / lightSensor.Length * 3 + samples.Length / lightSensor.Length / 2] = lightSensor[3];
                         //samples[896] = lightSensor[3];
-
                     }
                 }
                 else
@@ -316,13 +321,12 @@ public class Wave : MonoBehaviour
             //If microphone as an input
             if (inputSwitch == 1)
             {
-                    for (int x = -waveBlur / 2 + 1; x < waveBlur / 2; x++)
+                for (int x = -waveBlur / 2 + 1; x < waveBlur / 2; x++)
                 {
                     //check if x is above zero and up till max wave amount
                     if (i + x > 0 && i + x < waveAmount)
                     {
                         // if microphone as input
-
                         //count wave width to blur
                         devider++;
 
@@ -339,30 +343,62 @@ public class Wave : MonoBehaviour
                     }
                 }
             }
+
             //If light sensors as an input
             if (inputSwitch == 2)
             {
-                //devider++;
+                // for each light sensor
                 for (int y = 0; y < 4; y++)
                 {
-                    //for light sensor representitive wave
+                    //For the waves that are light sensors
                     if (i == lightSensorCenters[y])
                     {
                         samples[i] = minWaterLevelLocal + lightSensor[y] - lightSensor[y] / waveIntensity;
                         //print(samples[i]);
                     }
-                    // check weather current i for wave is close to sample that is reacting to sensor
+                    //For the waves that are nearby the light sensors
                     if (i != lightSensorCenters[y] && Mathf.Abs(i - lightSensorCenters[y]) < waveBlur / 2)
                     {
                         samplesAway = lightSensorCenters[y] - i;
-                        // WORKS //samples[i] = samples[i + samplesAway] - Mathf.Abs(samplesAway) / 1.2f;
-                        samples[i] = samples[i + samplesAway] - Mathf.Abs(samplesAway) / (1 / (1 + Mathf.Exp(-Mathf.Abs(samplesAway)))) * Mathf.Abs(samplesAway) / 20f;
-
+                        // WORKS ORG //samples[i] = samples[i + samplesAway] - Mathf.Abs(samplesAway) / 1.2f;
                         //sigmoid model
                         //1 / (1 + (Mathf.Pow(Mathf.Exp, -i)
+                        samples[i] = samples[i + samplesAway] - Mathf.Abs(samplesAway) / (1 / (1 + Mathf.Exp(-Mathf.Abs(samplesAway)))) * Mathf.Abs(samplesAway) / 15;
+                    }
+
+                    
+                    //For the wave parts that are in between lightSensorCenters
+                    if (y + 1 < lightSensorCenters.Length)
+                    {
+                        if (i == wavesInBetweenSensors[y])
+                        {
+                            //In betweener, simple mean
+                            samples[i] = (samples[lightSensorCenters[y]] + samples[lightSensorCenters[y + 1]]) / 2;
+                        }
+                    }
+
+                    smoother = 0;
+                    devider = 0;
+                    for (int x = -waveBlur / 2 + 1; x < waveBlur / 2; x++)
+                    {
+                        //check if x is above zero and up till max wave amount
+                        if (i + x > 0 && i + x < waveAmount)
+                        {
+                            devider++;
+
+                            if (x != 0)
+                            {
+                                //For other waves than current
+                                smoother += waves[i + x].transform.localScale.y;
+                            }
+                            else
+                            {
+                                //for current wave
+                                smoother += (minWaterLevelLocal + samples[i] * waveIntensity * intensityMulti);
+                            }
+                        }
                     }
                 }
-
             }
 
             // if wave reached maximum level, set it back to max
@@ -378,16 +414,11 @@ public class Wave : MonoBehaviour
                 }
                 if (inputSwitch == 2)
                 {
-                    waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, Mathf.Lerp(waves[i].transform.localScale.y, samples[i], waveSpeed / 500 + 0.01f), waves[1].transform.localScale.z);
+                    waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, Mathf.Lerp(waves[i].transform.localScale.y, smoother / devider, waveSpeed / 500 + 0.01f), waves[1].transform.localScale.z);
                 }
             }
         }
-
-        //waves[50].transform.localScale = new Vector3(waves[50].transform.localScale.x, Mathf.Lerp(waves[50].transform.localScale.y, minWaterLevelLocal + lightSensor[0], waveSpeed / 500 + 0.01f), waves[50].transform.localScale.z);
-
         StartCoroutine(resetWave());
-
-
         yield return new WaitForSeconds(1);
     }
 
@@ -396,11 +427,9 @@ public class Wave : MonoBehaviour
     {
         for (int i = 0; i < waveAmount; i++)
         {
-
             if (waves[i].transform.localScale.y <= minWaterLevelLocal)
             {
                 waves[i].transform.localScale = new Vector3(waves[1].transform.localScale.x, minWaterLevelLocal, waves[1].transform.localScale.z);
-
             }
             else
             {
@@ -429,8 +458,8 @@ public class Wave : MonoBehaviour
             setInputParameters();
 
         }
-        else if(inputSwitch != 2)
-        { 
+        else if (inputSwitch != 2)
+        {
             inputSwitch = 2;
             setInputParameters();
         }
@@ -452,14 +481,15 @@ public class Wave : MonoBehaviour
         }
         //If input is light sensors
         if (inputSwitch == 2 && !lightParametersSet)
-        { 
+        {
             print("Input: Light Sensors");
             lightParametersSet = true;
             micParametersSet = false;
-            waveBlur = waveAmount / 4 +1;
-            waveSpeed = 1;
-            waveIntensity = 1.1f;
-            intensityMulti = 2;
+            //waveBlur = waveAmount / 4 + 1;
+            waveBlur = 27;
+            waveSpeed = 1.1f;
+            waveIntensity = 2f;
+            intensityMulti = 1.1f;
         }
     }
     /*
